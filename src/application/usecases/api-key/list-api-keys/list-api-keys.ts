@@ -7,7 +7,10 @@ export class ListApiKeysUsecase {
   public async execute(input: ListApiKeysInputDto): Promise<ListApiKeysOutputDto> {
     const apiKeys = await this.apiKeyRepository.listByAccountId(input.accountId);
 
-    const maskedApiKeys = apiKeys.map((apiKey) => apiKey.getApiKey() && this.maskApiKey(apiKey.getApiKey()));
+    const maskedApiKeys = apiKeys.map((apiKey) => ({
+      id: apiKey.getId(),
+      apiKey: this.maskApiKey(apiKey.getApiKey())
+    }));
 
     return {
       apiKeys: maskedApiKeys

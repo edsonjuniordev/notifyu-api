@@ -12,8 +12,10 @@ describe('list-api-keys', () => {
   beforeEach(() => {
     apiKeyRepositoryMock = {
       create: jest.fn().mockResolvedValueOnce(null),
+      findById: jest.fn().mockResolvedValueOnce(null),
       findByApiKey: jest.fn().mockResolvedValueOnce(null),
       listByAccountId: jest.fn().mockResolvedValueOnce(null),
+      delete: jest.fn().mockResolvedValueOnce(null),
     };
 
     listApiKeysUsecase = new ListApiKeysUsecase(apiKeyRepositoryMock);

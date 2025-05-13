@@ -1,4 +1,4 @@
-import { DynamoDBDocumentClient, QueryCommand } from '@aws-sdk/lib-dynamodb';
+import { DeleteCommand, DynamoDBDocumentClient, QueryCommand } from '@aws-sdk/lib-dynamodb';
 import { ApiKey } from 'src/application/domain/entities/api-key.entity';
 import { ApiKeyRepository } from 'src/application/repositories/api-key.repository';
 import { GSI1_INDEX_NAME, TABLE_NAME } from '../../dynamo-client';
@@ -12,6 +12,30 @@ export class DynamoApiKeyRepository implements ApiKeyRepository {
     const command = ApiKeyEntityToModelMapper.map(apiKey);
 
     await this.dynamoClient.send(command);
+  }
+
+  public async findById(id: string, accountId: string): Promise<ApiKey | null> {
+    const command = new QueryCommand({
+      TableName: TABLE_NAME,
+      KeyConditionExpression: 'GSI1PK = :pk and GSI1SK = :sk',
+      IndexName: GSI1_INDEX_NAME,
+      ExpressionAttributeValues: {
+        ':pk': `ACCOUNT#${accountId}`,
+        ':sk': `API_KEY#${id}`,
+      },
+    });
+
+    const result = await this.dynamoClient.send(command);
+
+    const items = result.Items;
+
+    if (items.length === 0) {
+      return null;
+    }
+
+    const apiKeyEntity = ApiKeyModelToEntityMapper.map(items[0]);
+
+    return apiKeyEntity;
   }
 
   public async findByApiKey(apiKey: string): Promise<ApiKey | null> {
@@ -62,5 +86,17 @@ export class DynamoApiKeyRepository implements ApiKeyRepository {
     });
 
     return output;
+  }
+
+  public async delete(apiKey: string): Promise<void> {
+    const command = new DeleteCommand({
+      TableName: TABLE_NAME,
+      Key: {
+        PK: `API_KEY#${apiKey}`,
+        SK: `API_KEY#${apiKey}`
+      }
+    });
+
+    await this.dynamoClient.send(command);
   }
 }

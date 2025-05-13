@@ -112,3 +112,12 @@ functions:
           method: GET
           authorizer:
             name: authAuthorizer
+  deleteApiKey:
+    handler: src/functions/api-key/delete-api-key.handler
+    events:
+      - httpApi:
+          path: /api-keys/{id}
+          method: DELETE
+          authorizer:
+            name: authAuthorizer
+

@@ -3,5 +3,8 @@ export type ListApiKeysInputDto = {
 }
 
 export type ListApiKeysOutputDto = {
-  apiKeys: string[];
+  apiKeys: {
+    id: string;
+    apiKey: string;
+  }[];
 }
