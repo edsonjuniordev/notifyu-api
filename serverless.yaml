@@ -1,0 +1,114 @@
+service: notifyu-api
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  environment:
+    JWT_SECRET: ${env:JWT_SECRET}
+  httpApi:
+    authorizers:
+      authAuthorizer:
+        type: request
+        functionName: authAuthorizer
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:PutItem
+            - dynamodb:DeleteItem
+            - dynamodb:GetItem
+            - dynamodb:UpdateItem
+            - dynamodb:Query
+            - dynamodb:Scan
+          Resource:
+            - !GetAtt NotifyuTable.Arn
+
+package:
+  individually: true
+
+custom:
+  esbuild:
+    bundle: true
+    minify: false
+    sourcemap: false
+    exclude:
+     - "@aws-sdk/*"
+    target: node20
+    platform: node
+    concurrency: 10
+
+resources:
+  Resources:
+    NotifyuTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: notifyu_table
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: PK
+            AttributeType: S
+          - AttributeName: SK
+            AttributeType: S
+          - AttributeName: GSI1PK
+            AttributeType: S
+          - AttributeName: GSI1SK
+            AttributeType: S
+        KeySchema:
+          - AttributeName: PK
+            KeyType: HASH
+          - AttributeName: SK
+            KeyType: RANGE
+        GlobalSecondaryIndexes:
+          - IndexName: GSI1
+            KeySchema:
+              - AttributeName: GSI1PK
+                KeyType: HASH
+              - AttributeName: GSI1SK
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+
+functions:
+  authAuthorizer:
+    handler: src/functions/authorizers/auth-authorizer.handler
+
+  hello:
+    handler: src/functions/hello.handler
+    events:
+      - httpApi:
+          path: /
+          method: GET
+          authorizer:
+            name: authAuthorizer
+  signup:
+    handler: src/functions/auth/signup.handler
+    events:
+      - httpApi:
+          path: /auth/signup
+          method: POST
+  signin:
+    handler: src/functions/auth/signin.handler
+    events:
+      - httpApi:
+          path: /auth/signin
+          method: POST
+  createApiKey:
+    handler: src/functions/api-key/create-api-key.handler
+    events:
+      - httpApi:
+          path: /api-keys
+          method: POST
+          authorizer:
+            name: authAuthorizer
+  listApiKeys:
+    handler: src/functions/api-key/list-api-keys.handler
+    events:
+      - httpApi:
+          path: /api-keys
+          method: GET
+          authorizer:
+            name: authAuthorizer
