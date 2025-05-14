@@ -1,7 +1,9 @@
+import { DynamoDBDocumentClient, QueryCommand } from '@aws-sdk/lib-dynamodb';
 import { Notification } from 'src/application/domain/entities/notification.entity';
 import { NotificationRepository } from 'src/application/repositories/notification.repository';
+import { TABLE_NAME } from '../../dynamo-client';
 import { NotificationEntityToModelMapper } from './mappers/notification-entity-to-model.mapper';
-import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
+import { NotificationModelToEntityMapper } from './mappers/notification-model-to-entity.mapper';
 
 export class DynamoNotificationRepository implements NotificationRepository {
   constructor(private readonly dynamoClient: DynamoDBDocumentClient) { }
@@ -12,4 +14,44 @@ export class DynamoNotificationRepository implements NotificationRepository {
     await this.dynamoClient.send(command);
   }
 
+  public async list(accountId: string, page: string): Promise<{ notifications: Notification[]; nextPage: string; }> {
+    const lastEvaluatedKey = page ? this.decodeLastEvaluatedKey(page) : undefined;
+
+    const command = new QueryCommand({
+      TableName: TABLE_NAME,
+      KeyConditionExpression: 'PK = :pk',
+      ExpressionAttributeValues: {
+        ':pk': `NOTIFICATION#${accountId}`,
+      },
+      Limit: 10,
+      ExclusiveStartKey: lastEvaluatedKey
+    });
+
+    const result = await this.dynamoClient.send(command);
+
+    const items = result.Items;
+
+    if (items.length === 0) {
+      return null;
+    }
+
+    const notifications = items.map((item) => NotificationModelToEntityMapper.map(item));
+
+    const lastEvaluatedKeyEncoded = result.LastEvaluatedKey ? this.encodeLastEvaluatedKey(result.LastEvaluatedKey) : null;
+
+    return {
+      notifications,
+      nextPage: lastEvaluatedKeyEncoded
+    };
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private encodeLastEvaluatedKey(lastEvaluatedKey: Record<string, any>): string {
+    return Buffer.from(JSON.stringify(lastEvaluatedKey)).toString('base64');
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private decodeLastEvaluatedKey(encodedKey: string): Record<string, any> {
+    return JSON.parse(Buffer.from(encodedKey, 'base64').toString('utf-8'));
+  }
 }

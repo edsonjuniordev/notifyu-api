@@ -128,4 +128,12 @@ functions:
           method: POST
           authorizer:
             name: authAuthorizer
+  listNotifications:
+    handler: src/functions/notification/list-notifications.handler
+    events:
+      - httpApi:
+          path: /notifications
+          method: GET
+          authorizer:
+            name: authAuthorizer
 

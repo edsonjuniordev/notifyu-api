@@ -1,13 +1,13 @@
 import { APIGatewayProxyEventV2 } from 'aws-lambda';
-import { CreateNotificationUsecase } from 'src/application/usecases/notifications/create-notification';
 import { dynamoClient } from 'src/infra/database/dynamo/dynamo-client';
 import { DynamoAccountRepository } from 'src/infra/database/dynamo/repositories/account/account.repository';
 import { DynamoNotificationRepository } from 'src/infra/database/dynamo/repositories/notification/notification.repository';
 import { BodyParser } from '../utils/body-parser';
-import { CreateNotificationInputDto } from 'src/application/usecases/notifications/create-notification.dto';
 import { CreateNotificationValidator } from '../validators/create-notification.validator';
 import { ResponseParser } from '../utils/response-parser';
 import { ErrorHandler } from '../utils/error-handler';
+import { CreateNotificationUsecase } from 'src/application/usecases/notification/create-notification/create-notification';
+import { CreateNotificationInputDto } from 'src/application/usecases/notification/create-notification/create-notification.dto';
 
 const accountRepository = new DynamoAccountRepository(dynamoClient);
 const notificationRepository = new DynamoNotificationRepository(dynamoClient);
