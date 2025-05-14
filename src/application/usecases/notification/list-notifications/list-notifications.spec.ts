@@ -12,14 +12,16 @@ describe('list-notifications', () => {
   beforeEach(() => {
     notificationRepository = {
       create: jest.fn().mockResolvedValueOnce(null),
-      list: jest.fn().mockResolvedValueOnce([])
+      list: jest.fn().mockResolvedValueOnce([]),
+      listByStatus: jest.fn().mockResolvedValueOnce([]),
     };
 
     listNotificationsUsecase = new ListNotificationsUsecase(notificationRepository);
 
     listNotificationsInputDto = {
       accountId: 'accountId',
-      page: 'page'
+      page: 'page',
+      status: 'created'
     };
   });
 
@@ -49,6 +51,27 @@ describe('list-notifications', () => {
 
       expect(notificationRepository.list).toHaveBeenCalledTimes(1);
       expect(notificationRepository.list).toHaveBeenCalledWith(listNotificationsInputDto.accountId, listNotificationsInputDto.page);
+    });
+
+    it('should list notifications by status', async () => {
+      const notification = Notification.create({
+        accountId: 'accountId',
+        payload: 'payload',
+        notificationDate: 'notificationDate',
+      });
+
+      notificationRepository.listByStatus = jest.fn().mockResolvedValueOnce({
+        notifications: [notification],
+        nextPage: 'nextPage'
+      });
+
+      await listNotificationsUsecase.execute({
+        accountId: listNotificationsInputDto.accountId,
+        status: listNotificationsInputDto.status
+      });
+
+      expect(notificationRepository.listByStatus).toHaveBeenCalledTimes(1);
+      expect(notificationRepository.listByStatus).toHaveBeenCalledWith(listNotificationsInputDto.accountId, listNotificationsInputDto.status);
     });
   });
 });

@@ -1,12 +1,27 @@
 import { NotificationRepository } from 'src/application/repositories/notification.repository';
 import { ListNotificationsInputDto, ListNotificationsOutputDto } from './list-notifications.dto';
+import { Notification } from 'src/application/domain/entities/notification.entity';
 
 export class ListNotificationsUsecase {
-  constructor(private readonly notificationRepository: NotificationRepository) {}
+  constructor(private readonly notificationRepository: NotificationRepository) { }
 
-  public async execute(input: ListNotificationsInputDto): Promise<ListNotificationsOutputDto> {
-    const { nextPage, notifications } = await this.notificationRepository.list(input.accountId, input.page);
+  public async execute({
+    accountId,
+    page,
+    status
+  }: ListNotificationsInputDto): Promise<ListNotificationsOutputDto> {
+    if (status) {
+      const { nextPage, notifications } = await this.notificationRepository.listByStatus(accountId, page, status);
 
+      return this.toOutput(nextPage, notifications);
+    }
+
+    const { nextPage, notifications } = await this.notificationRepository.list(accountId, page);
+
+    return this.toOutput(nextPage, notifications);
+  }
+
+  private toOutput(nextPage: string, notifications: Notification[]): ListNotificationsOutputDto {
     return {
       nextPage,
       notifications: notifications.map((notification) => ({

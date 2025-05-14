@@ -6,4 +6,8 @@ export interface NotificationRepository {
     notifications: Notification[];
     nextPage: string;
   }>
+  listByStatus(accountId: string, page: string, status: string): Promise<{
+    notifications: Notification[];
+    nextPage: string;
+  }>
 }

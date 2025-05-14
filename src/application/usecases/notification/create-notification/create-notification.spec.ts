@@ -22,7 +22,8 @@ describe('create-notification', () => {
 
     notificationRepositoryMock = {
       create: jest.fn().mockResolvedValueOnce(null),
-      list: jest.fn().mockResolvedValueOnce([])
+      list: jest.fn().mockResolvedValueOnce([]),
+      listByStatus: jest.fn().mockResolvedValueOnce([]),
     };
 
     createNotificationUsecase = new CreateNotificationUsecase(accountRepositoryMock, notificationRepositoryMock);
