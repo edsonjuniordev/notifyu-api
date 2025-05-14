@@ -6,7 +6,7 @@ export class ApiKeyModelToEntityMapper {
     return ApiKey.with({
       id: model.id,
       accountId: model.accountId,
-      apiKey: model.api_key,
+      apiKey: model.apiKey,
     });
   }
 }

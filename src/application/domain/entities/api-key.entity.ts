@@ -11,7 +11,7 @@ type WithDto = {
 }
 
 export class ApiKey {
-  constructor(
+  private constructor(
     private id: string,
     private accountId: string,
     private apiKey: string,

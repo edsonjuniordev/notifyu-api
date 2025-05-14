@@ -9,12 +9,15 @@ export class AccountEntityToModelMapper {
       Item: {
         PK: `ACCOUNT#${account.getEmail()}`,
         SK: `ACCOUNT#${account.getEmail()}`,
+        GSI1PK: `ACCOUNT#${account.getId()}`,
+        GSI1SK: `ACCOUNT#${account.getId()}`,
         type: 'ACCOUNT',
         id: account.getId(),
         name: account.getName(),
         email: account.getEmail(),
         password: account.getPassword(),
         notificationQuantity: account.getNotificationQuantity(),
+        locked: false
       },
     });
   }

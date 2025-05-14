@@ -28,7 +28,7 @@ export class SigninUsecase {
     const account = await this.accountRepository.findByEmail(email);
 
     if (!account) {
-      throw new Error('user not found');
+      throw new Error('account not found');
     }
 
     const passwordValid = await compare(password, account.getPassword());

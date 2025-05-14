@@ -12,6 +12,9 @@ describe('signup', () => {
     accountRepositoryMock = {
       create: jest.fn().mockResolvedValueOnce(null),
       findByEmail: jest.fn().mockResolvedValueOnce(null),
+      findByIdAndLock: jest.fn().mockResolvedValueOnce(null),
+      update: jest.fn().mockResolvedValueOnce(null),
+      unlock: jest.fn().mockResolvedValueOnce(null),
     };
     signupUsecase = new SignupUsecase(accountRepositoryMock);
     signupInputDto = {

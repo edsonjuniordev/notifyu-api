@@ -11,10 +11,10 @@ export class ApiKeyEntityToModelMapper {
         SK: `API_KEY#${apiKey.getApiKey()}`,
         GSI1PK: `ACCOUNT#${apiKey.getAccountId()}`,
         GSI1SK: `API_KEY#${apiKey.getId()}`,
-        id: apiKey.getId(),
         type: 'API_KEY',
+        id: apiKey.getId(),
         accountId: apiKey.getAccountId(),
-        api_key: apiKey.getApiKey(),
+        apiKey: apiKey.getApiKey(),
       },
     });
   }

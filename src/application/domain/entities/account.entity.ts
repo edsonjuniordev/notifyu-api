@@ -15,7 +15,7 @@ type WithDto = {
 }
 
 export class Account {
-  constructor (
+  private constructor (
     private id: string,
     private name: string,
     private email: string,
@@ -62,5 +62,13 @@ export class Account {
 
   public getNotificationQuantity(): number {
     return this.notificationQuantity;
+  }
+
+  public decreaseNotifications() {
+    if(this.notificationQuantity === 0) {
+      throw new Error('account without sufficient notification');
+    }
+
+    this.notificationQuantity -= 1;
   }
 }

@@ -18,6 +18,9 @@ describe('signin', () => {
     accountRepositoryMock = {
       create: jest.fn().mockResolvedValueOnce(null),
       findByEmail: jest.fn().mockResolvedValueOnce(null),
+      findByIdAndLock: jest.fn().mockResolvedValueOnce(null),
+      update: jest.fn().mockResolvedValueOnce(null),
+      unlock: jest.fn().mockResolvedValueOnce(null),
     };
 
     apiKeyRepositoryMock = {
@@ -89,7 +92,7 @@ describe('signin', () => {
       accountRepositoryMock.findByEmail = jest.fn().mockResolvedValueOnce(null);
 
       await expect(signinUsecase.execute(signinInputDto)).rejects.toThrow(
-        'user not found',
+        'account not found',
       );
 
       expect(accountRepositoryMock.findByEmail).toHaveBeenCalledTimes(1);

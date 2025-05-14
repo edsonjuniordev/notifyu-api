@@ -120,4 +120,12 @@ functions:
           method: DELETE
           authorizer:
             name: authAuthorizer
+  createNotification:
+    handler: src/functions/notification/create-notification.handler
+    events:
+      - httpApi:
+          path: /notifications
+          method: POST
+          authorizer:
+            name: authAuthorizer
 
