@@ -10,7 +10,8 @@ describe('create-plan', () => {
 
   beforeEach(() => {
     planRepository = {
-      create: jest.fn().mockResolvedValueOnce(null)
+      create: jest.fn().mockResolvedValueOnce(null),
+      list: jest.fn().mockResolvedValueOnce([]),
     };
 
     createPlanUsecase = new CreatePlanUsecase(planRepository);

@@ -150,4 +150,9 @@ functions:
           method: POST
           authorizer:
             name: adminAuthorizer
-
+  listPlans:
+    handler: src/functions/plan/list-plans.handler
+    events:
+      - httpApi:
+          path: /plans
+          method: GET
