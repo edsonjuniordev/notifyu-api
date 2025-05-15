@@ -24,7 +24,8 @@ export class DynamoNotificationRepository implements NotificationRepository {
         ':pk': `NOTIFICATION#${accountId}`,
       },
       Limit: 10,
-      ExclusiveStartKey: lastEvaluatedKey
+      ExclusiveStartKey: lastEvaluatedKey,
+      ScanIndexForward: false
     });
 
     const result = await this.dynamoClient.send(command);
@@ -32,7 +33,10 @@ export class DynamoNotificationRepository implements NotificationRepository {
     const items = result.Items;
 
     if (items.length === 0) {
-      return null;
+      return {
+        notifications: [],
+        nextPage: null
+      };
     }
 
     const notifications = items.map((item) => NotificationModelToEntityMapper.map(item));
@@ -57,7 +61,8 @@ export class DynamoNotificationRepository implements NotificationRepository {
         ':sk': `NOTIFICATION#${status.toUpperCase()}`
       },
       Limit: 10,
-      ExclusiveStartKey: lastEvaluatedKey
+      ExclusiveStartKey: lastEvaluatedKey,
+      ScanIndexForward: false
     });
 
     const result = await this.dynamoClient.send(command);
@@ -65,7 +70,10 @@ export class DynamoNotificationRepository implements NotificationRepository {
     const items = result.Items;
 
     if (items.length === 0) {
-      return null;
+      return {
+        notifications: [],
+        nextPage: null
+      };
     }
 
     const notifications = items.map((item) => NotificationModelToEntityMapper.map(item));

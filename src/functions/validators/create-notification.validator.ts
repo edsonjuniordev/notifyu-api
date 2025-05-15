@@ -14,6 +14,7 @@ const createNotificationSchema = z.object({
     (value) => !isNaN(Date.parse(value)),
     { message: 'notificationDate must be a valid ISO date string' }
   ),
+  destination: z.string().min(3)
 });
 
 export class CreateNotificationValidator {

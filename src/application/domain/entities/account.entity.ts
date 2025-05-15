@@ -1,4 +1,4 @@
-import { GenerateUUID } from 'src/application/utils/generate-uuid';
+import { GenerateULID } from 'src/application/utils/generate-ulid';
 
 type CreateDto = {
   name: string;
@@ -28,7 +28,7 @@ export class Account {
     email,
     password,
   }: CreateDto): Account {
-    const id = GenerateUUID.generate();
+    const id = GenerateULID.generate();
     const notificationQuantity = 0;
 
     return new Account(id, name, email, password, notificationQuantity);

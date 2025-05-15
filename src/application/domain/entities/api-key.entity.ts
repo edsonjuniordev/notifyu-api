@@ -1,4 +1,4 @@
-import { GenerateUUID } from 'src/application/utils/generate-uuid';
+import { GenerateULID } from 'src/application/utils/generate-ulid';
 
 type CreateDto = {
   accountId: string;
@@ -20,9 +20,9 @@ export class ApiKey {
   public static create({
     accountId,
   }: CreateDto): ApiKey {
-    const id = GenerateUUID.generate();
+    const id = GenerateULID.generate();
 
-    const apiKey = GenerateUUID.generate();
+    const apiKey = GenerateULID.generate();
 
     return new ApiKey(id, accountId, apiKey);
   }

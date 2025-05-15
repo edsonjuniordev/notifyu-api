@@ -11,6 +11,7 @@ export type ListNotificationsOutputDto = {
     payload: string;
     status: string;
     notificationDate: string;
+    destination: string;
     createdAt: string;
     updatedAt: string;
   }[];

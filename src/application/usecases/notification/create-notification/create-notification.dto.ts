@@ -2,6 +2,7 @@ export type CreateNotificationInputDto = {
   accountId: string;
   payload: string;
   notificationDate: string;
+  destination: string;
 }
 
 export type CreateNotificationOutputDto = {
@@ -10,6 +11,7 @@ export type CreateNotificationOutputDto = {
   payload: string;
   status: string;
   notificationDate: string;
+  destination: string;
   createdAt: string;
   updatedAt: string;
 }

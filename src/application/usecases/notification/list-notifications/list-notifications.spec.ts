@@ -37,6 +37,7 @@ describe('list-notifications', () => {
         accountId: 'accountId',
         payload: 'payload',
         notificationDate: 'notificationDate',
+        destination: 'destination'
       });
 
       notificationRepository.list = jest.fn().mockResolvedValueOnce({
@@ -58,6 +59,7 @@ describe('list-notifications', () => {
         accountId: 'accountId',
         payload: 'payload',
         notificationDate: 'notificationDate',
+        destination: 'destination'
       });
 
       notificationRepository.listByStatus = jest.fn().mockResolvedValueOnce({
@@ -67,11 +69,12 @@ describe('list-notifications', () => {
 
       await listNotificationsUsecase.execute({
         accountId: listNotificationsInputDto.accountId,
+        page: listNotificationsInputDto.page,
         status: listNotificationsInputDto.status
       });
 
       expect(notificationRepository.listByStatus).toHaveBeenCalledTimes(1);
-      expect(notificationRepository.listByStatus).toHaveBeenCalledWith(listNotificationsInputDto.accountId, listNotificationsInputDto.status);
+      expect(notificationRepository.listByStatus).toHaveBeenCalledWith(listNotificationsInputDto.accountId, listNotificationsInputDto.page, listNotificationsInputDto.status);
     });
   });
 });

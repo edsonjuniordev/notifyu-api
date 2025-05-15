@@ -9,6 +9,7 @@ export class NotificationModelToEntityMapper {
       payload: model.payload,
       status: model.status,
       notificationDate: model.notificationDate,
+      destination: model.destination,
       createdAt: model.createdAt,
       updatedAt: model.updatedAt,
     });

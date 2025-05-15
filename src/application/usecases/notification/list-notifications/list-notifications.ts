@@ -30,6 +30,7 @@ export class ListNotificationsUsecase {
         payload: notification.getPayload(),
         status: notification.getStatus(),
         notificationDate: notification.getNotificationDate(),
+        destination: notification.getDestination(),
         createdAt: notification.getCreatedAt(),
         updatedAt: notification.getUpdatedAt(),
       }))

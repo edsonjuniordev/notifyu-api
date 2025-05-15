@@ -1,4 +1,4 @@
-import { GenerateUUID } from 'src/application/utils/generate-uuid';
+import { GenerateULID } from 'src/application/utils/generate-ulid';
 
 export enum NotificationStatus {
   CREATED = 'CREATED',
@@ -10,6 +10,7 @@ type CreateDto = {
   accountId: string;
   payload: string;
   notificationDate: string;
+  destination: string;
 }
 
 type WithDto = {
@@ -18,6 +19,7 @@ type WithDto = {
   payload: string;
   status: string;
   notificationDate: string;
+  destination: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -29,6 +31,7 @@ export class Notification {
     private payload: string,
     private status: NotificationStatus,
     private notificationDate: string,
+    private destination: string,
     private createdAt: string,
     private updatedAt: string
   ) { }
@@ -37,8 +40,9 @@ export class Notification {
     accountId,
     payload,
     notificationDate,
+    destination
   }: CreateDto): Notification {
-    const id = GenerateUUID.generate();
+    const id = GenerateULID.generate();
 
     const status = NotificationStatus.CREATED;
 
@@ -50,6 +54,7 @@ export class Notification {
       payload,
       status,
       notificationDate,
+      destination,
       now,
       now
     );
@@ -61,6 +66,7 @@ export class Notification {
     payload,
     status,
     notificationDate,
+    destination,
     createdAt,
     updatedAt,
   }: WithDto): Notification {
@@ -70,6 +76,7 @@ export class Notification {
       payload,
       NotificationStatus[status],
       notificationDate,
+      destination,
       createdAt,
       updatedAt
     );
@@ -93,6 +100,10 @@ export class Notification {
 
   public getNotificationDate(): string {
     return this.notificationDate;
+  }
+
+  public getDestination(): string {
+    return this.destination;
   }
 
   public getCreatedAt(): string {

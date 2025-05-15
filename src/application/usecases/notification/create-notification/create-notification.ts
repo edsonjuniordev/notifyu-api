@@ -23,6 +23,7 @@ export class CreateNotificationUsecase {
         accountId: input.accountId,
         payload: input.payload,
         notificationDate: input.notificationDate,
+        destination: input.destination
       });
 
       await this.notificationRepository.create(notification);
@@ -34,6 +35,7 @@ export class CreateNotificationUsecase {
         payload: notification.getPayload(),
         status: notification.getStatus(),
         notificationDate: notification.getNotificationDate(),
+        destination: notification.getDestination(),
         createdAt: notification.getCreatedAt(),
         updatedAt: notification.getUpdatedAt(),
       };
