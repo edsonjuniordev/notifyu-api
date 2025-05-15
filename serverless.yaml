@@ -8,11 +8,15 @@ provider:
   runtime: nodejs20.x
   environment:
     JWT_SECRET: ${env:JWT_SECRET}
+    ADMIN_API_KEY: ${env:ADMIN_API_KEY}
   httpApi:
     authorizers:
       authAuthorizer:
         type: request
         functionName: authAuthorizer
+      adminAuthorizer:
+        type: request
+        functionName: adminAuthorizer
   iam:
     role:
       statements:
@@ -75,6 +79,8 @@ resources:
 functions:
   authAuthorizer:
     handler: src/functions/authorizers/auth-authorizer.handler
+  adminAuthorizer:
+    handler: src/functions/authorizers/admin-authorizer.handler
 
   hello:
     handler: src/functions/hello.handler
@@ -136,4 +142,12 @@ functions:
           method: GET
           authorizer:
             name: authAuthorizer
+  createPlan:
+    handler: src/functions/plan/create-plan.handler
+    events:
+      - httpApi:
+          path: /plans
+          method: POST
+          authorizer:
+            name: adminAuthorizer
 

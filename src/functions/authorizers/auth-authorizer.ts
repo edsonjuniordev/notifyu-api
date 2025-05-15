@@ -1,5 +1,6 @@
-import { APIGatewayAuthorizerResult, APIGatewayAuthorizerResultContext, APIGatewayRequestAuthorizerEventV2 } from 'aws-lambda';
+import { APIGatewayAuthorizerResult, APIGatewayRequestAuthorizerEventV2 } from 'aws-lambda';
 import { verify } from 'jsonwebtoken';
+import { generatePolicy } from './generate-policy';
 
 function extractTokenFromHeader(event: APIGatewayRequestAuthorizerEventV2): string | undefined {
   const [type, token] = event.headers['authorization'].split(' ') ?? [];
@@ -25,20 +26,3 @@ export const handler = async (event: APIGatewayRequestAuthorizerEventV2,): Promi
     throw new Error('Unauthorized');
   }
 };
-
-function generatePolicy(resource: string, context: APIGatewayAuthorizerResultContext): APIGatewayAuthorizerResult {
-  return {
-    principalId: 'user',
-    policyDocument: {
-      Version: '2012-10-17',
-      Statement: [
-        {
-          Action: 'execute-api:Invoke',
-          Effect: 'Allow',
-          Resource: resource,
-        },
-      ],
-    },
-    context
-  };
-}
