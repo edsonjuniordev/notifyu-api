@@ -5,7 +5,14 @@ const maxSizeInKB = 100;
 const maxSizeInBytes = maxSizeInKB * 1024;
 
 const createNotificationSchema = z.object({
-  payload: z.string().refine((data) => Buffer.byteLength(data, 'utf-8') <= maxSizeInBytes,
+  payload: z.any().refine((data) => {
+    try {
+      const jsonString = JSON.stringify(data);
+      return Buffer.byteLength(jsonString, 'utf-8') <= maxSizeInBytes;
+    } catch {
+      return false;
+    }
+  },
     {
       message: `payload must not be larger than ${maxSizeInKB} KB.`,
     }

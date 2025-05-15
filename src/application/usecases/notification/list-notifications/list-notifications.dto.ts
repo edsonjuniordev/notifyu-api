@@ -8,7 +8,7 @@ export type ListNotificationsOutputDto = {
   notifications: {
     id: string;
     accountId: string;
-    payload: string;
+    payload: unknown;
     status: string;
     notificationDate: string;
     destination: string;

@@ -1,6 +1,6 @@
 export type CreateNotificationInputDto = {
   accountId: string;
-  payload: string;
+  payload: unknown;
   notificationDate: string;
   destination: string;
 }
@@ -8,7 +8,7 @@ export type CreateNotificationInputDto = {
 export type CreateNotificationOutputDto = {
   id: string;
   accountId: string;
-  payload: string;
+  payload: unknown;
   status: string;
   notificationDate: string;
   destination: string;

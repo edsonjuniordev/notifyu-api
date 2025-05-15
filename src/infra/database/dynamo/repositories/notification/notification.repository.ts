@@ -14,6 +14,14 @@ export class DynamoNotificationRepository implements NotificationRepository {
     await this.dynamoClient.send(command);
   }
 
+  public async recreate(notification: Notification): Promise<void> {
+    const command = NotificationEntityToModelMapper.map(notification);
+
+    delete command.input.Item.TTL;
+
+    await this.dynamoClient.send(command);
+  }
+
   public async list(accountId: string, page: string): Promise<{ notifications: Notification[]; nextPage: string; }> {
     const lastEvaluatedKey = page ? this.decodeLastEvaluatedKey(page) : undefined;
 

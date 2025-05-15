@@ -8,7 +8,7 @@ export enum NotificationStatus {
 
 type CreateDto = {
   accountId: string;
-  payload: string;
+  payload: unknown;
   notificationDate: string;
   destination: string;
 }
@@ -16,7 +16,7 @@ type CreateDto = {
 type WithDto = {
   id: string;
   accountId: string;
-  payload: string;
+  payload: unknown;
   status: string;
   notificationDate: string;
   destination: string;
@@ -28,7 +28,7 @@ export class Notification {
   private constructor(
     private id: string,
     private accountId: string,
-    private payload: string,
+    private payload: unknown,
     private status: NotificationStatus,
     private notificationDate: string,
     private destination: string,
@@ -90,7 +90,7 @@ export class Notification {
     return this.accountId;
   }
 
-  public getPayload(): string {
+  public getPayload(): unknown {
     return this.payload;
   }
 
@@ -112,5 +112,27 @@ export class Notification {
 
   public getUpdatedAt(): string {
     return this.updatedAt;
+  }
+
+  public notify() {
+    if (this.status !== NotificationStatus.CREATED) {
+      throw new Error(`unable to update status because it is different from ${NotificationStatus.CREATED}`);
+    }
+
+    this.status = NotificationStatus.NOTIFIED;
+    this.update();
+  }
+
+  public failed() {
+    if (this.status !== NotificationStatus.CREATED) {
+      throw new Error(`unable to update status because it is different from ${NotificationStatus.CREATED}`);
+    }
+
+    this.status = NotificationStatus.FAILED;
+    this.update();
+  }
+
+  private update() {
+    this.updatedAt = new Date().toISOString();
   }
 }
