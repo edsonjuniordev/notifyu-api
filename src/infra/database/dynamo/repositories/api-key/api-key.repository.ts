@@ -64,10 +64,11 @@ export class DynamoApiKeyRepository implements ApiKeyRepository {
   public async listByAccountId(accountId: string): Promise<ApiKey[]> {
     const command = new QueryCommand({
       TableName: TABLE_NAME,
-      KeyConditionExpression: 'GSI1PK = :pk',
+      KeyConditionExpression: 'GSI1PK = :pk AND begins_with(GSI1SK, :sk)',
       IndexName: GSI1_INDEX_NAME,
       ExpressionAttributeValues: {
         ':pk': `ACCOUNT#${accountId}`,
+        ':sk': 'API_KEY'
       },
     });
 

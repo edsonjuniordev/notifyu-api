@@ -16,7 +16,7 @@ const signinUsecase = new SigninUsecase(accountRepository, apiKeyRepository);
 
 export async function handler(event: APIGatewayProxyEventV2) {
   try {
-    const body = BodyParser.parse<SigninInputDto>(event.body);
+    const body = event.body ? BodyParser.parse<SigninInputDto>(event.body) : {};
 
     const headers = event.headers;
 

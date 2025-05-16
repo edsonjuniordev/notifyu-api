@@ -9,7 +9,7 @@ export class ListApiKeysUsecase {
 
     const maskedApiKeys = apiKeys.map((apiKey) => ({
       id: apiKey.getId(),
-      apiKey: this.maskApiKey(apiKey.getApiKey())
+      apiKey: apiKey.getApiKey() && this.maskApiKey(apiKey.getApiKey())
     }));
 
     return {

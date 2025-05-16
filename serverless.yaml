@@ -31,6 +31,10 @@ provider:
             - dynamodb:GetRecords
           Resource:
             - !GetAtt NotifyuTable.Arn
+            - Fn::Join:
+              - ""
+              - - !GetAtt NotifyuTable.Arn
+                - "/index/GSI1"
 
 package:
   individually: true
@@ -38,7 +42,7 @@ package:
 custom:
   esbuild:
     bundle: true
-    minify: false
+    minify: true
     sourcemap: false
     exclude:
      - "@aws-sdk/*"
