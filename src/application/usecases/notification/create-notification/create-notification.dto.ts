@@ -3,6 +3,7 @@ export type CreateNotificationInputDto = {
   payload: unknown;
   notificationDate: string;
   destination: string;
+  notificationType: string;
 }
 
 export type CreateNotificationOutputDto = {
@@ -12,6 +13,7 @@ export type CreateNotificationOutputDto = {
   status: string;
   notificationDate: string;
   destination: string;
+  notificationType: string;
   createdAt: string;
   updatedAt: string;
 }

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { ZodError } from './types';
+import { NotificationType } from 'src/application/domain/entities/notification.entity';
 
 const maxSizeInKB = 100;
 const maxSizeInBytes = maxSizeInKB * 1024;
@@ -21,7 +22,8 @@ const createNotificationSchema = z.object({
     (value) => !isNaN(Date.parse(value)),
     { message: 'notificationDate must be a valid ISO date string' }
   ),
-  destination: z.string().min(3)
+  destination: z.string().min(3),
+  notificationType: z.nativeEnum(NotificationType)
 });
 
 export class CreateNotificationValidator {

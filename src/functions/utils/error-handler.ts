@@ -15,7 +15,7 @@ export class ErrorHandler {
         return ResponseParser.parse(401, { message: error.message });
       case 'invalid api key':
         return ResponseParser.parse(401, { message: error.message });
-      case 'account without sufficient notification':
+      case 'account without sufficient http notification':
         return ResponseParser.parse(400, { message: error.message });
       default:
         console.log('Error: ', error);

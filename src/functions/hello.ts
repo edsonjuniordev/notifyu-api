@@ -1,7 +1,5 @@
-import { APIGatewayProxyEventV2 } from 'aws-lambda';
 
-export async function handler(event: APIGatewayProxyEventV2) {
-  console.log('🚀 ~ handler ~ event:', event.requestContext['authorizer']['lambda']['accountId']);
+export async function handler() {
 
   return {
     statusCode: 200,

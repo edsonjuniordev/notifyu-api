@@ -6,11 +6,16 @@ export enum NotificationStatus {
   FAILED = 'FAILED'
 }
 
+export enum NotificationType {
+  HTTP = 'HTTP'
+}
+
 type CreateDto = {
   accountId: string;
   payload: unknown;
   notificationDate: string;
   destination: string;
+  notificationType: string;
 }
 
 type WithDto = {
@@ -20,6 +25,7 @@ type WithDto = {
   status: string;
   notificationDate: string;
   destination: string;
+  notificationType: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -32,6 +38,7 @@ export class Notification {
     private status: NotificationStatus,
     private notificationDate: string,
     private destination: string,
+    private notificationType: NotificationType,
     private createdAt: string,
     private updatedAt: string
   ) { }
@@ -40,7 +47,8 @@ export class Notification {
     accountId,
     payload,
     notificationDate,
-    destination
+    destination,
+    notificationType
   }: CreateDto): Notification {
     const id = GenerateULID.generate();
 
@@ -55,6 +63,7 @@ export class Notification {
       status,
       notificationDate,
       destination,
+      NotificationType[notificationType.toUpperCase()],
       now,
       now
     );
@@ -67,6 +76,7 @@ export class Notification {
     status,
     notificationDate,
     destination,
+    notificationType,
     createdAt,
     updatedAt,
   }: WithDto): Notification {
@@ -77,6 +87,7 @@ export class Notification {
       NotificationStatus[status],
       notificationDate,
       destination,
+      NotificationType[notificationType],
       createdAt,
       updatedAt
     );
@@ -106,6 +117,10 @@ export class Notification {
     return this.destination;
   }
 
+  public getNotificationType(): NotificationType {
+    return this.notificationType;
+  }
+
   public getCreatedAt(): string {
     return this.createdAt;
   }
@@ -124,7 +139,7 @@ export class Notification {
   }
 
   public failed() {
-    if (this.status !== NotificationStatus.CREATED) {
+    if (this.status !== NotificationStatus.CREATED && this.status !== NotificationStatus.NOTIFIED) {
       throw new Error(`unable to update status because it is different from ${NotificationStatus.CREATED}`);
     }
 

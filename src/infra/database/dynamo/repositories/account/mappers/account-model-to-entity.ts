@@ -8,7 +8,7 @@ export class AccountModelToEntityMapper {
       name: model.name,
       email: model.email,
       password: model.password,
-      notificationQuantity: model.notificationQuantity,
+      httpNotificationQuantity: model.httpNotificationQuantity,
     });
   }
 }

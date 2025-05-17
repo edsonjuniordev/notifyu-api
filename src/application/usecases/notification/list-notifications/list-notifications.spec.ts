@@ -38,7 +38,8 @@ describe('list-notifications', () => {
         accountId: 'accountId',
         payload: 'payload',
         notificationDate: 'notificationDate',
-        destination: 'destination'
+        destination: 'destination',
+        notificationType: 'http'
       });
 
       notificationRepository.list = jest.fn().mockResolvedValueOnce({
@@ -60,7 +61,8 @@ describe('list-notifications', () => {
         accountId: 'accountId',
         payload: 'payload',
         notificationDate: 'notificationDate',
-        destination: 'destination'
+        destination: 'destination',
+        notificationType: 'HTTP'
       });
 
       notificationRepository.listByStatus = jest.fn().mockResolvedValueOnce({

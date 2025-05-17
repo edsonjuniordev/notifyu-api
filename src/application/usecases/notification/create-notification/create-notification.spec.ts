@@ -33,7 +33,8 @@ describe('create-notification', () => {
       accountId: 'any-account-id',
       payload: 'payload',
       notificationDate: new Date().toISOString(),
-      destination: 'destination'
+      destination: 'destination',
+      notificationType: 'http'
     };
   });
 
@@ -50,7 +51,7 @@ describe('create-notification', () => {
         name: 'name',
         email: 'email',
         password: 'password',
-        notificationQuantity: 1,
+        httpNotificationQuantity: 1,
       });
 
       accountRepositoryMock.findByIdAndLock = jest.fn().mockResolvedValueOnce(account);
@@ -79,13 +80,13 @@ describe('create-notification', () => {
         name: 'name',
         email: 'email',
         password: 'password',
-        notificationQuantity: 0,
+        httpNotificationQuantity: 0,
       });
 
       accountRepositoryMock.findByIdAndLock = jest.fn().mockResolvedValueOnce(account);
 
       await expect(createNotificationUsecase.execute(createNotificationInputDto)).rejects.toThrow(
-        'account without sufficient notification',
+        'account without sufficient http notification',
       );
 
       expect(accountRepositoryMock.findByIdAndLock).toHaveBeenCalledTimes(1);

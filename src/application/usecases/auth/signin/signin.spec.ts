@@ -76,7 +76,7 @@ describe('signin', () => {
         name: 'John Doe',
         email: signinInputDto.email,
         password: '$2b$10$yLOcgQ5kbJonWGxgc5DxYOxrFSK2RTNaUZMkh.Ztc4kM16p51GiOq',
-        notificationQuantity: 0,
+        httpNotificationQuantity: 0,
       });
       accountRepositoryMock.findByEmail = jest.fn().mockResolvedValueOnce(account);
 
@@ -106,7 +106,7 @@ describe('signin', () => {
         name: 'John Doe',
         email: signinInputDto.email,
         password: '12345678',
-        notificationQuantity: 0,
+        httpNotificationQuantity: 0,
       });
       accountRepositoryMock.findByEmail = jest.fn().mockResolvedValueOnce(account);
 

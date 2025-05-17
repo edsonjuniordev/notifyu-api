@@ -65,7 +65,7 @@ export class DynamoNotificationRepository implements NotificationRepository {
       KeyConditionExpression: 'GSI1PK = :pk AND begins_with(GSI1SK, :sk)',
       ExpressionAttributeValues: {
         ':pk': `NOTIFICATION#${accountId}`,
-        ':sk': `NOTIFICATION#${status.toUpperCase()}`
+        ':sk': `NOTIFICATION#${status}`
       },
       Limit: 10,
       ExclusiveStartKey: lastEvaluatedKey,

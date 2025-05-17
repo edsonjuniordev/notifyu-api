@@ -24,9 +24,10 @@ describe('process-notification', () => {
       id: 'id',
       accountId: 'accountId',
       payload: 'payload',
-      status: 'status',
+      status: 'CREATED',
       notificationDate: 'notificationDate',
       destination: 'destination',
+      notificationType: 'HTTP',
       createdAt: 'createdAt',
       updatedAt: 'updatedAt',
     };

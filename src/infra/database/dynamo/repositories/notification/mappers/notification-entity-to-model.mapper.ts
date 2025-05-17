@@ -19,6 +19,7 @@ export class NotificationEntityToModelMapper {
         status: notification.getStatus().toString(),
         notificationDate: notification.getNotificationDate(),
         destination: notification.getDestination(),
+        notificationType: notification.getNotificationType(),
         createdAt: notification.getCreatedAt(),
         updatedAt: notification.getUpdatedAt(),
         TTL: Datetime.convertToUnix(notification.getNotificationDate())

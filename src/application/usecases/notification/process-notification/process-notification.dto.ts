@@ -5,6 +5,7 @@ export type ProcessNotificationInputDto = {
   status: string;
   notificationDate: string;
   destination: string;
+  notificationType: string;
   createdAt: string;
   updatedAt: string;
 }

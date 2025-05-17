@@ -98,8 +98,7 @@ functions:
       - httpApi:
           path: /
           method: GET
-          authorizer:
-            name: authAuthorizer
+
   signup:
     handler: src/functions/auth/signup.handler
     events:

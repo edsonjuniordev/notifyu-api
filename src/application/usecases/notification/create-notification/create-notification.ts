@@ -17,13 +17,14 @@ export class CreateNotificationUsecase {
     }
 
     try {
-      account.decreaseNotifications();
+      account.decreaseHttpNotifications();
 
       const notification = Notification.create({
         accountId: input.accountId,
         payload: input.payload,
         notificationDate: input.notificationDate,
-        destination: input.destination
+        destination: input.destination,
+        notificationType: input.notificationType
       });
 
       await this.notificationRepository.create(notification);
@@ -36,6 +37,7 @@ export class CreateNotificationUsecase {
         status: notification.getStatus(),
         notificationDate: notification.getNotificationDate(),
         destination: notification.getDestination(),
+        notificationType: notification.getNotificationType(),
         createdAt: notification.getCreatedAt(),
         updatedAt: notification.getUpdatedAt(),
       };

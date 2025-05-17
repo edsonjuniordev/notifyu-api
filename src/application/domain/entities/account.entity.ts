@@ -11,7 +11,7 @@ type WithDto = {
   name: string;
   email: string;
   password: string;
-  notificationQuantity: number;
+  httpNotificationQuantity: number;
 }
 
 export class Account {
@@ -20,7 +20,7 @@ export class Account {
     private name: string,
     private email: string,
     private password: string,
-    private notificationQuantity: number,
+    private httpNotificationQuantity: number,
   ) {}
 
   public static create({
@@ -29,9 +29,9 @@ export class Account {
     password,
   }: CreateDto): Account {
     const id = GenerateULID.generate();
-    const notificationQuantity = 0;
+    const httpNotificationQuantity = 0;
 
-    return new Account(id, name, email, password, notificationQuantity);
+    return new Account(id, name, email, password, httpNotificationQuantity);
   }
 
   public static with({
@@ -39,9 +39,9 @@ export class Account {
     name,
     email,
     password,
-    notificationQuantity,
+    httpNotificationQuantity,
   }: WithDto): Account {
-    return new Account(id, name, email, password, notificationQuantity);
+    return new Account(id, name, email, password, httpNotificationQuantity);
   }
 
   public getId(): string {
@@ -60,15 +60,15 @@ export class Account {
     return this.password;
   }
 
-  public getNotificationQuantity(): number {
-    return this.notificationQuantity;
+  public getHttpNotificationQuantity(): number {
+    return this.httpNotificationQuantity;
   }
 
-  public decreaseNotifications() {
-    if(this.notificationQuantity === 0) {
-      throw new Error('account without sufficient notification');
+  public decreaseHttpNotifications() {
+    if(this.httpNotificationQuantity === 0) {
+      throw new Error('account without sufficient http notification');
     }
 
-    this.notificationQuantity -= 1;
+    this.httpNotificationQuantity -= 1;
   }
 }
