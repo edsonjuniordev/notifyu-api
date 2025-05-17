@@ -8,7 +8,7 @@ export class CreatePlanUsecase {
   public async execute(input: CreatePlanInputDto): Promise<CreatePlanOutputDto> {
     const plan = Plan.create({
       name: input.name,
-      notificationQuantity: input.notificationQuantity,
+      httpNotificationQuantity: input.httpNotificationQuantity,
       amount: input.amount,
     });
 
@@ -17,7 +17,7 @@ export class CreatePlanUsecase {
     return {
       id: plan.getId(),
       name: plan.getName(),
-      notificationQuantity: plan.getNotificationQuantity(),
+      httpNotificationQuantity: plan.getHttpNotificationQuantity(),
       amount: plan.getAmount(),
     };
   }

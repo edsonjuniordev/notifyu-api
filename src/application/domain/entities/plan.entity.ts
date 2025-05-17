@@ -7,14 +7,14 @@ export enum PlanStatus {
 
 type CreateDto = {
   name: string;
-  notificationQuantity: number;
+  httpNotificationQuantity: number;
   amount: number;
 }
 
 type WithDto = {
   id: string;
   name: string;
-  notificationQuantity: number;
+  httpNotificationQuantity: number;
   amount: number;
   status: string;
 }
@@ -23,14 +23,14 @@ export class Plan {
   private constructor(
     private id: string,
     private name: string,
-    private notificationQuantity: number,
+    private httpNotificationQuantity: number,
     private amount: number,
     private status: PlanStatus
   ) {}
 
   public static create({
     name,
-    notificationQuantity,
+    httpNotificationQuantity,
     amount
   }: CreateDto): Plan {
     const id = GenerateULID.generate();
@@ -38,7 +38,7 @@ export class Plan {
     return new Plan(
       id,
       name,
-      notificationQuantity,
+      httpNotificationQuantity,
       amount,
       PlanStatus.ENABLED
     );
@@ -47,14 +47,14 @@ export class Plan {
   public static with({
     id,
     name,
-    notificationQuantity,
+    httpNotificationQuantity,
     amount,
     status
   }: WithDto): Plan {
     return new Plan(
       id,
       name,
-      notificationQuantity,
+      httpNotificationQuantity,
       amount,
       PlanStatus[status]
     );
@@ -68,8 +68,8 @@ export class Plan {
     return this.name;
   }
 
-  public getNotificationQuantity(): number {
-    return this.notificationQuantity;
+  public getHttpNotificationQuantity(): number {
+    return this.httpNotificationQuantity;
   }
 
   public getAmount(): number {

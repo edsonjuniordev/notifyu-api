@@ -7,8 +7,10 @@ export class AccountModelToEntityMapper {
       id: model.id,
       name: model.name,
       email: model.email,
+      document: model.document,
       password: model.password,
       httpNotificationQuantity: model.httpNotificationQuantity,
+      externalReference: model.externalReference
     });
   }
 }

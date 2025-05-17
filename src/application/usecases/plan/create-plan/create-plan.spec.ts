@@ -18,7 +18,7 @@ describe('create-plan', () => {
 
     createPlanInputDto = {
       name: 'name',
-      notificationQuantity: 1,
+      httpNotificationQuantity: 1,
       amount: 1
     };
   });

@@ -50,8 +50,10 @@ describe('create-notification', () => {
         id: createNotificationInputDto.accountId,
         name: 'name',
         email: 'email',
+        document: '12345678910',
         password: 'password',
         httpNotificationQuantity: 1,
+        externalReference: 'id'
       });
 
       accountRepositoryMock.findByIdAndLock = jest.fn().mockResolvedValueOnce(account);
@@ -79,8 +81,10 @@ describe('create-notification', () => {
         id: createNotificationInputDto.accountId,
         name: 'name',
         email: 'email',
+        document: '12345678910',
         password: 'password',
         httpNotificationQuantity: 0,
+        externalReference: 'id'
       });
 
       accountRepositoryMock.findByIdAndLock = jest.fn().mockResolvedValueOnce(account);

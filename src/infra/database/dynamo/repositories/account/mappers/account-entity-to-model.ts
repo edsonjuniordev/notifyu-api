@@ -15,8 +15,10 @@ export class AccountEntityToModelMapper {
         id: account.getId(),
         name: account.getName(),
         email: account.getEmail(),
+        document: account.getDocument(),
         password: account.getPassword(),
         httpNotificationQuantity: account.getHttpNotificationQuantity(),
+        externalReference: account.getExternalReference(),
         locked: false
       },
     });

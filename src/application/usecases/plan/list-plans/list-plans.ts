@@ -11,7 +11,7 @@ export class ListPlansUsecase {
       plans: plans.map((plan) => ({
         id: plan.getId(),
         name: plan.getName(),
-        notificationQuantity: plan.getNotificationQuantity(),
+        httpNotificationQuantity: plan.getHttpNotificationQuantity(),
         amount: plan.getAmount(),
         status: plan.getStatus().toString(),
       }))

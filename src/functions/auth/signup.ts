@@ -7,10 +7,13 @@ import { SignupValidator } from '../validators/signup.validator';
 import { BodyParser } from '../utils/body-parser';
 import { ResponseParser } from '../utils/response-parser';
 import { ErrorHandler } from '../utils/error-handler';
+import { AsaasPaymentService } from 'src/infra/services/payment/payment-service';
 
 const accountRepository = new DynamoAccountRepository(dynamoClient);
 
-const signupUsecase = new SignupUsecase(accountRepository);
+const paymentService = new AsaasPaymentService();
+
+const signupUsecase = new SignupUsecase(accountRepository, paymentService);
 
 export async function handler(event: APIGatewayProxyEventV2) {
   try {

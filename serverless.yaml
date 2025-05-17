@@ -9,6 +9,8 @@ provider:
   environment:
     JWT_SECRET: ${env:JWT_SECRET}
     ADMIN_API_KEY: ${env:ADMIN_API_KEY}
+    ASAAS_API_KEY: ${env:ASAAS_API_KEY}
+    ASAAS_BASE_PATH: ${env:ASAAS_BASE_PATH}
   httpApi:
     authorizers:
       authAuthorizer:

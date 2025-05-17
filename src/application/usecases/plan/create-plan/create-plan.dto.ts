@@ -1,12 +1,12 @@
 export type CreatePlanInputDto = {
   name: string;
-  notificationQuantity: number;
+  httpNotificationQuantity: number;
   amount: number;
 }
 
 export type CreatePlanOutputDto = {
   id: string;
   name: string;
-  notificationQuantity: number;
+  httpNotificationQuantity: number;
   amount: number;
 }
