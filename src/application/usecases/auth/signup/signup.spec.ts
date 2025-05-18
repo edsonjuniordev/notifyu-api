@@ -17,9 +17,11 @@ describe('signup', () => {
       findByIdAndLock: jest.fn().mockResolvedValueOnce(null),
       update: jest.fn().mockResolvedValueOnce(null),
       unlock: jest.fn().mockResolvedValueOnce(null),
+      findById: jest.fn().mockResolvedValueOnce(null),
     };
     paymnetServiceMock = {
-      createAccount: jest.fn().mockResolvedValueOnce(null)
+      createAccount: jest.fn().mockResolvedValueOnce(null),
+      createOrder: jest.fn().mockResolvedValueOnce(null)
     };
     signupUsecase = new SignupUsecase(accountRepositoryMock, paymnetServiceMock);
     signupInputDto = {

@@ -14,7 +14,8 @@ export class PlanEntityToModelMapper {
         type: 'PLAN',
         id: plan.getId(),
         name: plan.getName(),
-        notificationQuantity: plan.getNotificationQuantity(),
+        amount: plan.getAmount(),
+        httpNotificationQuantity: plan.getHttpNotificationQuantity(),
         status: plan.getStatus().toString(),
       },
     });

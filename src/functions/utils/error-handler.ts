@@ -17,6 +17,8 @@ export class ErrorHandler {
         return ResponseParser.parse(401, { message: error.message });
       case 'account without sufficient http notification':
         return ResponseParser.parse(400, { message: error.message });
+      case 'plan not found':
+        return ResponseParser.parse(400, { message: error.message });
       default:
         console.log('Error: ', error);
         return ResponseParser.parse(500, { message: 'internal server error' });

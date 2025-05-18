@@ -1,16 +1,14 @@
 import { z } from 'zod';
 import { ZodError } from './types';
 
-const createPlanSchema = z.object({
-  name: z.string().min(3),
-  httpNotificationQuantity: z.number().min(100),
-  amount: z.number().min(500)
+const createOrderSchema = z.object({
+  planId: z.string()
 });
 
-export class CreatePlanValidator {
+export class CreateOrderValidator {
   public static validate(input: unknown): ZodError[] {
     try {
-      createPlanSchema.parse(input);
+      createOrderSchema.parse(input);
     } catch (error) {
       const errors = error?.errors?.map((err) => ({
         field: err?.path.join('.'),

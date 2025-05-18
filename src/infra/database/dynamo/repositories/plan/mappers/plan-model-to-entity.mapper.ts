@@ -6,7 +6,7 @@ export class PlanModelToEntityMapper {
     return Plan.with({
       id: model.id,
       name: model.name,
-      notificationQuantity: model.notificationQuantity,
+      httpNotificationQuantity: model.httpNotificationQuantity,
       amount: model.amount,
       status: model.status,
     });

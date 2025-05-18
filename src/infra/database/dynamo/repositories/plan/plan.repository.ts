@@ -14,6 +14,29 @@ export class DynamoPlanRepository implements PlanRepository {
     await this.dynamoClient.send(command);
   }
 
+  public async findById(planId: string): Promise<Plan | null> {
+    const queryCommand = new QueryCommand({
+      TableName: TABLE_NAME,
+      KeyConditionExpression: 'PK = :pk and SK = :sk',
+      ExpressionAttributeValues: {
+        ':pk': 'PLAN',
+        ':sk': `PLAN#${planId}`,
+      }
+    });
+
+    const result = await this.dynamoClient.send(queryCommand);
+
+    const items = result.Items;
+
+    if (items.length === 0) {
+      return null;
+    }
+
+    const plan = PlanModelToEntityMapper.map(items[0]);
+
+    return plan;
+  }
+
   public async list(): Promise<Plan[]> {
     const command = new QueryCommand({
       TableName: TABLE_NAME,

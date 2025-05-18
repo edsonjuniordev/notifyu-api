@@ -18,6 +18,30 @@ export class DynamoAccountRepository implements AccountRepository {
     await this.dynamoClient.send(command);
   }
 
+  public async findById(id: string): Promise<Account | null> {
+    const queryCommand = new QueryCommand({
+      TableName: TABLE_NAME,
+      IndexName: GSI1_INDEX_NAME,
+      KeyConditionExpression: 'GSI1PK = :pk and GSI1SK = :sk',
+      ExpressionAttributeValues: {
+        ':pk': `ACCOUNT#${id}`,
+        ':sk': `ACCOUNT#${id}`,
+      }
+    });
+
+    const result = await this.dynamoClient.send(queryCommand);
+
+    const items = result.Items;
+
+    if (items.length === 0) {
+      return null;
+    }
+
+    const account = AccountModelToEntityMapper.map(items[0]);
+
+    return account;
+  }
+
   public async findByIdAndLock(id: string, retries: number = 1): Promise<Account | null> {
     if (retries > MAX_RETRIES) {
       throw new Error('could not lock the record');

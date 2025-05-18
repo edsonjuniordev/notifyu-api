@@ -176,3 +176,11 @@ functions:
       - httpApi:
           path: /plans
           method: GET
+  createOrder:
+    handler: src/functions/order/create-order.handler
+    events:
+      - httpApi:
+          path: /orders
+          method: POST
+          authorizer:
+            name: authAuthorizer

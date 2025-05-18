@@ -4,7 +4,6 @@ import { generatePolicy } from './generate-policy';
 export const handler = async (event: APIGatewayRequestAuthorizerEventV2,): Promise<APIGatewayAuthorizerResult> => {
   try {
     const apiKey = event.headers['authorization'];
-    console.log('🚀 ~ handler ~ apiKey:', apiKey);
 
     if (!apiKey) {
       throw new Error('Unauthorized');

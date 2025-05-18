@@ -10,6 +10,7 @@ describe('list-plan', () => {
     planRepository = {
       create: jest.fn().mockResolvedValueOnce(null),
       list: jest.fn().mockResolvedValueOnce([]),
+      findById: jest.fn().mockResolvedValueOnce(null),
     };
 
     listPlanUsecase = new ListPlansUsecase(planRepository);

@@ -6,15 +6,16 @@ describe('create-plan', () => {
   let createPlanUsecase: CreatePlanUsecase;
   let createPlanInputDto: CreatePlanInputDto;
 
-  let planRepository: PlanRepository;
+  let planRepositoryMock: PlanRepository;
 
   beforeEach(() => {
-    planRepository = {
+    planRepositoryMock = {
       create: jest.fn().mockResolvedValueOnce(null),
       list: jest.fn().mockResolvedValueOnce([]),
+      findById: jest.fn().mockResolvedValueOnce(null)
     };
 
-    createPlanUsecase = new CreatePlanUsecase(planRepository);
+    createPlanUsecase = new CreatePlanUsecase(planRepositoryMock);
 
     createPlanInputDto = {
       name: 'name',
@@ -33,7 +34,7 @@ describe('create-plan', () => {
     it('should create a plan', async () => {
       await createPlanUsecase.execute(createPlanInputDto);
 
-      expect(planRepository.create).toHaveBeenCalledTimes(1);
+      expect(planRepositoryMock.create).toHaveBeenCalledTimes(1);
     });
   });
 });

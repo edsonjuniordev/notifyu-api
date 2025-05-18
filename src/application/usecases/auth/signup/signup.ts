@@ -28,7 +28,7 @@ export class SignupUsecase {
 
     const externalReference = await this.paymentService.createAccount(account);
 
-    account.attachExternalReference(externalReference);
+    account.addExternalReference(externalReference);
 
     await this.accountRepository.create(account);
   }

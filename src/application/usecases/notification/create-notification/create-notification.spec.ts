@@ -18,6 +18,7 @@ describe('create-notification', () => {
       findByIdAndLock: jest.fn().mockResolvedValueOnce(null),
       update: jest.fn().mockResolvedValueOnce(null),
       unlock: jest.fn().mockResolvedValueOnce(null),
+      findById: jest.fn().mockResolvedValueOnce(null),
     };
 
     notificationRepositoryMock = {
