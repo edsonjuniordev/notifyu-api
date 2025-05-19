@@ -14,6 +14,8 @@ describe('pay-order', () => {
       create: jest.fn().mockResolvedValueOnce(null),
       findById: jest.fn().mockResolvedValueOnce(null),
       update: jest.fn().mockResolvedValueOnce(null),
+      list: jest.fn().mockResolvedValueOnce([]),
+      listByStatus: jest.fn().mockResolvedValueOnce([]),
     };
 
     payOrderUsecase = new PayOrderUsecase(orderRepositoryMock);
@@ -45,5 +47,5 @@ describe('pay-order', () => {
       expect(orderRepositoryMock.findById).toHaveBeenCalledTimes(1);
       expect(orderRepositoryMock.update).toHaveBeenCalledTimes(1);
     });
-   });
+  });
 });

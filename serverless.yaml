@@ -185,6 +185,14 @@ functions:
           method: POST
           authorizer:
             name: authAuthorizer
+  listOrders:
+    handler: src/functions/order/list-orders.handler
+    events:
+      - httpApi:
+          path: /orders
+          method: GET
+          authorizer:
+            name: authAuthorizer
   webhook:
     handler: src/functions/webhook/webhook.handler
     events:

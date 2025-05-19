@@ -1,7 +1,7 @@
 import { DynamoDBDocumentClient, QueryCommand } from '@aws-sdk/lib-dynamodb';
 import { Notification } from 'src/application/domain/entities/notification.entity';
 import { NotificationRepository } from 'src/application/repositories/notification.repository';
-import { GSI1_INDEX_NAME, TABLE_NAME } from '../../dynamo-client';
+import { TABLE_NAME } from '../../dynamo-client';
 import { NotificationEntityToModelMapper } from './mappers/notification-entity-to-model.mapper';
 import { NotificationModelToEntityMapper } from './mappers/notification-model-to-entity.mapper';
 
@@ -61,11 +61,10 @@ export class DynamoNotificationRepository implements NotificationRepository {
 
     const command = new QueryCommand({
       TableName: TABLE_NAME,
-      IndexName: GSI1_INDEX_NAME,
-      KeyConditionExpression: 'GSI1PK = :pk AND begins_with(GSI1SK, :sk)',
+      KeyConditionExpression: 'PK = :pk AND begins_with(SK, :sk)',
       ExpressionAttributeValues: {
         ':pk': `NOTIFICATION#${accountId}`,
-        ':sk': `NOTIFICATION#${status}`
+        ':sk': `NOTIFICATION#${status.toUpperCase()}`
       },
       Limit: 10,
       ExclusiveStartKey: lastEvaluatedKey,

@@ -12,9 +12,9 @@ export class NotificationEntityToModelMapper {
       TableName: TABLE_NAME,
       Item: {
         PK: `NOTIFICATION#${notification.getAccountId()}`,
-        SK: `NOTIFICATION#${notification.getId()}`,
-        GSI1PK: `NOTIFICATION#${notification.getAccountId()}`,
-        GSI1SK: `NOTIFICATION#${notification.getStatus()}#${notification.getId()}`,
+        SK: `NOTIFICATION#${notification.getStatus()}`,
+        GSI1PK: `NOTIFICATION#${notification.getId()}`,
+        GSI1SK: `NOTIFICATION#${notification.getId()}`,
         type: 'NOTIFICATION',
         id: notification.getId(),
         accountId: notification.getAccountId(),
