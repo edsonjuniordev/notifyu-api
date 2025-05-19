@@ -5,6 +5,9 @@ import { TABLE_NAME } from '../../../dynamo-client';
 
 export class NotificationEntityToModelMapper {
   public static map(notification: Notification): PutCommand {
+    const dateTime = Datetime.addHoursToIsoString(notification.getNotificationDate(), 3);
+    const TTL = Datetime.convertToUnix(dateTime);
+
     return new PutCommand({
       TableName: TABLE_NAME,
       Item: {
@@ -22,7 +25,7 @@ export class NotificationEntityToModelMapper {
         notificationType: notification.getNotificationType(),
         createdAt: notification.getCreatedAt(),
         updatedAt: notification.getUpdatedAt(),
-        TTL: Datetime.convertToUnix(notification.getNotificationDate())
+        TTL
       },
     });
   }
