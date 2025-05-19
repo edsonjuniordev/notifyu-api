@@ -109,4 +109,11 @@ export class Order {
   public addInvoiceUrl(invoiceUrl: string) {
     this.invoiceUrl = invoiceUrl;
   }
+
+  public pay() {
+    if (this.status !== OrderStatus.PENDING) {
+      throw new Error(`unable to update status because it is different from ${OrderStatus.PENDING}`);
+    }
+    this.status = OrderStatus.PAID;
+  }
 }

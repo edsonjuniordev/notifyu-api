@@ -15,7 +15,9 @@ describe('create-order', () => {
 
   beforeEach(() => {
     orderRepositoryMock = {
-      create: jest.fn().mockResolvedValueOnce(null)
+      create: jest.fn().mockResolvedValueOnce(null),
+      findById: jest.fn().mockResolvedValueOnce(null),
+      update: jest.fn().mockResolvedValueOnce(null),
     };
     planRepositoryMock = {
       create: jest.fn().mockResolvedValueOnce(null),

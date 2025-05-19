@@ -11,6 +11,7 @@ provider:
     ADMIN_API_KEY: ${env:ADMIN_API_KEY}
     ASAAS_API_KEY: ${env:ASAAS_API_KEY}
     ASAAS_BASE_PATH: ${env:ASAAS_BASE_PATH}
+    WEBHOOK_API_KEY: ${env:WEBHOOK_API_KEY}
   httpApi:
     authorizers:
       authAuthorizer:
@@ -184,3 +185,9 @@ functions:
           method: POST
           authorizer:
             name: authAuthorizer
+  webhook:
+    handler: src/functions/webhook/webhook.handler
+    events:
+      - httpApi:
+          path: /webhooks
+          method: POST
