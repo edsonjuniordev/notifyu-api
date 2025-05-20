@@ -2,7 +2,7 @@ import { GenerateULID } from 'src/application/utils/generate-ulid';
 
 export enum OrderStatus {
   PENDING = 'PENDING',
-  OVERDUE = 'OVERDUE',
+  EXPIRED = 'EXPIRED',
   PAID = 'PAID'
 }
 
@@ -115,5 +115,12 @@ export class Order {
       throw new Error(`unable to update status because it is different from ${OrderStatus.PENDING}`);
     }
     this.status = OrderStatus.PAID;
+  }
+
+    public expire() {
+    if (this.status !== OrderStatus.PENDING) {
+      throw new Error(`unable to update status because it is different from ${OrderStatus.PENDING}`);
+    }
+    this.status = OrderStatus.EXPIRED;
   }
 }

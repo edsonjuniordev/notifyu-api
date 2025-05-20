@@ -8,6 +8,7 @@ import { PayOrderUsecase } from 'src/application/usecases/order/pay-order/pay-or
 import { DynamoOrderRepository } from 'src/infra/database/dynamo/repositories/order/order.repository';
 import { dynamoClient } from 'src/infra/database/dynamo/dynamo-client';
 import { DynamoAccountRepository } from 'src/infra/database/dynamo/repositories/account/account.repository';
+import { ExpireOrderUsecase } from 'src/application/usecases/order/expire-order/expire-order';
 
 const orderRepository = new DynamoOrderRepository(dynamoClient);
 const accountRepository = new DynamoAccountRepository(dynamoClient);
@@ -15,6 +16,7 @@ const accountRepository = new DynamoAccountRepository(dynamoClient);
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const USECASE_MAP = new Map<string, any>();
 USECASE_MAP.set(WebhookEventType.PAYMENT_CONFIRMED, new PayOrderUsecase(orderRepository, accountRepository));
+USECASE_MAP.set(WebhookEventType.PAYMENT_OVERDUE, new ExpireOrderUsecase(orderRepository));
 
 export async function handler(event: APIGatewayProxyEventV2) {
   try {
