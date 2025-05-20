@@ -92,4 +92,8 @@ export class Account {
   public addExternalReference(externalReference: string) {
     this.externalReference = externalReference;
   }
+
+  public addHttpNotificationQuantity(httpNotificationQuantity: number) {
+    this.httpNotificationQuantity += httpNotificationQuantity;
+  }
 }
