@@ -17,4 +17,10 @@ export class Datetime {
 
     return date.toISOString();
   }
+
+  public static roundToExactMinute(date: Date): Date {
+    const result = new Date(date);
+    result.setSeconds(0, 0);
+    return result;
+  }
 }

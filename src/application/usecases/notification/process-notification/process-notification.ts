@@ -29,8 +29,9 @@ export class ProcessNotificationUsecase {
     });
 
     try {
+      notification.notify();
+
       if (notification.getNotificationType() === NotificationType.HTTP) {
-        notification.notify();
 
         const response = await fetch(destination, {
           method: 'POST',

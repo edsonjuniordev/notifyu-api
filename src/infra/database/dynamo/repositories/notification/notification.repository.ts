@@ -1,7 +1,7 @@
 import { DynamoDBDocumentClient, QueryCommand } from '@aws-sdk/lib-dynamodb';
 import { Notification } from 'src/application/domain/entities/notification.entity';
 import { NotificationRepository } from 'src/application/repositories/notification.repository';
-import { TABLE_NAME } from '../../dynamo-client';
+import { GSI2_INDEX_NAME, TABLE_NAME } from '../../dynamo-client';
 import { NotificationEntityToModelMapper } from './mappers/notification-entity-to-model.mapper';
 import { NotificationModelToEntityMapper } from './mappers/notification-model-to-entity.mapper';
 
@@ -67,6 +67,41 @@ export class DynamoNotificationRepository implements NotificationRepository {
         ':sk': `NOTIFICATION#${status.toUpperCase()}`
       },
       Limit: 10,
+      ExclusiveStartKey: lastEvaluatedKey,
+    });
+
+    const result = await this.dynamoClient.send(command);
+
+    const items = result.Items;
+
+    if (items.length === 0) {
+      return {
+        notifications: [],
+        nextPage: null
+      };
+    }
+
+    const notifications = items.map((item) => NotificationModelToEntityMapper.map(item));
+
+    const lastEvaluatedKeyEncoded = result.LastEvaluatedKey ? this.encodeLastEvaluatedKey(result.LastEvaluatedKey) : null;
+
+    return {
+      notifications,
+      nextPage: lastEvaluatedKeyEncoded
+    };
+  }
+
+  public async listByNotificationDate(page: string, notificationDate: string): Promise<{ notifications: Notification[]; nextPage: string; }> {
+    const lastEvaluatedKey = page ? this.decodeLastEvaluatedKey(page) : undefined;
+
+    const command = new QueryCommand({
+      TableName: TABLE_NAME,
+      IndexName: GSI2_INDEX_NAME,
+      KeyConditionExpression: 'GSI2PK = :pk AND GSI2SK = :sk',
+      ExpressionAttributeValues: {
+        ':pk': 'NOTIFICATION',
+        ':sk': `NOTIFICATION#${notificationDate}`
+      },
       ExclusiveStartKey: lastEvaluatedKey,
     });
 

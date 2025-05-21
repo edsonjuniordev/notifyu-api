@@ -1,7 +1,7 @@
 export type ProcessNotificationInputDto = {
   id: string;
   accountId: string;
-  payload: string;
+  payload: unknown;
   status: string;
   notificationDate: string;
   destination: string;

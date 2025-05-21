@@ -8,7 +8,7 @@ export class OrderEntityToModelMapper {
       TableName: TABLE_NAME,
       Item: {
         PK: `ORDER#${order.getAccountId()}`,
-        SK: `ORDER#${order.getStatus()}`,
+        SK: `ORDER#${order.getStatus()}#${order.getId()}`,
         GSI1PK: `ORDER#${order.getId()}`,
         GSI1SK: `ORDER#${order.getId()}`,
         type: 'ORDER',
