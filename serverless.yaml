@@ -198,6 +198,7 @@ functions:
           method: POST
   processNotifications:
     handler: src/functions/notification/process-notifications.handler
+    timeout: 60
     events:
       - schedule:
           rate: rate(1 minute)

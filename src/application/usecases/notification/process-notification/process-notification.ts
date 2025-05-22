@@ -32,7 +32,6 @@ export class ProcessNotificationUsecase {
       notification.notify();
 
       if (notification.getNotificationType() === NotificationType.HTTP) {
-
         const response = await fetch(destination, {
           method: 'POST',
           headers: {
@@ -45,14 +44,14 @@ export class ProcessNotificationUsecase {
           notification.failed();
         }
 
-        await this.notificationRepository.recreate(notification);
+        await this.notificationRepository.update(notification);
       }
     } catch (error) {
       console.log('🚀 ~ ProcessNotificationUsecase ~ error:', error);
       notification.failed();
 
       if (error.message !== 'unable to update status because it is different from CREATED') {
-        await this.notificationRepository.recreate(notification);
+        await this.notificationRepository.update(notification);
       }
     }
   }

@@ -15,7 +15,7 @@ describe('process-notification', () => {
       create: jest.fn().mockResolvedValueOnce(null),
       list: jest.fn().mockResolvedValueOnce([]),
       listByStatus: jest.fn().mockResolvedValueOnce([]),
-      recreate: jest.fn().mockResolvedValueOnce(null)
+      update: jest.fn().mockResolvedValueOnce(null)
     };
 
     processNotificationUsecase = new ProcessNotificationUsecase(notificationRepository);
@@ -50,7 +50,7 @@ describe('process-notification', () => {
       await processNotificationUsecase.execute(processNotificationInputDto);
 
       expect(fetch).toHaveBeenCalled();
-      expect(notificationRepository.recreate).toHaveBeenCalled();
+      expect(notificationRepository.update).toHaveBeenCalled();
     });
 
     it('should process notification with fail', async () => {
@@ -61,7 +61,7 @@ describe('process-notification', () => {
       await processNotificationUsecase.execute(processNotificationInputDto);
 
       expect(fetch).toHaveBeenCalled();
-      expect(notificationRepository.recreate).toHaveBeenCalled();
+      expect(notificationRepository.update).toHaveBeenCalled();
     });
 
     it('should process notification with error', async () => {
@@ -70,7 +70,7 @@ describe('process-notification', () => {
       await processNotificationUsecase.execute(processNotificationInputDto);
 
       expect(fetch).toHaveBeenCalled();
-      expect(notificationRepository.recreate).toHaveBeenCalled();
+      expect(notificationRepository.update).toHaveBeenCalled();
     });
    });
 });

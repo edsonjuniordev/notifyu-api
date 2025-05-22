@@ -111,8 +111,8 @@ export class Order {
   }
 
   public pay() {
-    if (this.status !== OrderStatus.PENDING) {
-      throw new Error(`unable to update status because it is different from ${OrderStatus.PENDING}`);
+    if (this.status !== OrderStatus.PENDING && this.status !== OrderStatus.EXPIRED) {
+      throw new Error(`unable to update status because it is different from ${OrderStatus.PENDING} and ${OrderStatus.EXPIRED}`);
     }
     this.status = OrderStatus.PAID;
   }

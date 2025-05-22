@@ -14,7 +14,7 @@ describe('list-notifications', () => {
       create: jest.fn().mockResolvedValueOnce(null),
       list: jest.fn().mockResolvedValueOnce([]),
       listByStatus: jest.fn().mockResolvedValueOnce([]),
-      recreate: jest.fn().mockResolvedValueOnce(null)
+      update: jest.fn().mockResolvedValueOnce(null)
     };
 
     listNotificationsUsecase = new ListNotificationsUsecase(notificationRepository);

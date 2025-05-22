@@ -1,7 +1,7 @@
 import { DynamoDBDocumentClient, QueryCommand } from '@aws-sdk/lib-dynamodb';
 import { Order } from 'src/application/domain/entities/order.entity';
 import { OrderRepository } from 'src/application/repositories/order.repository';
-import { GSI1_INDEX_NAME, TABLE_NAME } from '../../dynamo-client';
+import { GSI1_INDEX_NAME, GSI2_INDEX_NAME, TABLE_NAME } from '../../dynamo-client';
 import { OrderEntityToModelMapper } from './mappers/order-entity-to-model.mapper';
 import { OrderModelToEntityMapper } from './mappers/order-model-to-entity.mapper';
 
@@ -53,7 +53,8 @@ export class DynamoOrderRepository implements OrderRepository {
 
     const command = new QueryCommand({
       TableName: TABLE_NAME,
-      KeyConditionExpression: 'PK = :pk AND begins_with(SK, :sk)',
+      IndexName: GSI1_INDEX_NAME,
+      KeyConditionExpression: 'GSI1PK = :pk AND begins_with(GSI1SK, :sk)',
       ExpressionAttributeValues: {
         ':pk': `ORDER#${accountId}`,
         ':sk': `ORDER#${status.toUpperCase()}`
@@ -86,8 +87,8 @@ export class DynamoOrderRepository implements OrderRepository {
   public async findById(orderId: string): Promise<Order | null> {
     const queryCommand = new QueryCommand({
       TableName: TABLE_NAME,
-      IndexName: GSI1_INDEX_NAME,
-      KeyConditionExpression: 'GSI1PK = :pk and GSI1SK = :sk',
+      IndexName: GSI2_INDEX_NAME,
+      KeyConditionExpression: 'GSI2PK = :pk and GSI2SK = :sk',
       ExpressionAttributeValues: {
         ':pk': `ORDER#${orderId}`,
         ':sk': `ORDER#${orderId}`,

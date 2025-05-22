@@ -35,7 +35,7 @@ async function getNotifications(datetime: string, page = '', accumulatedNotifica
   const newAccumulatedNotifications = [...accumulatedNotifications, ...notifications];
 
   if (nextPage) {
-    return getNotifications(datetime);
+    return getNotifications(datetime, nextPage, newAccumulatedNotifications);
   }
 
   return newAccumulatedNotifications;

@@ -68,7 +68,7 @@ export class DynamoApiKeyRepository implements ApiKeyRepository {
       IndexName: GSI1_INDEX_NAME,
       ExpressionAttributeValues: {
         ':pk': `ACCOUNT#${accountId}`,
-        ':sk': 'API_KEY'
+        ':sk': 'API_KEY#'
       },
     });
 

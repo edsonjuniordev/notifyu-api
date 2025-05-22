@@ -1,7 +1,7 @@
 import { DynamoDBDocumentClient, QueryCommand } from '@aws-sdk/lib-dynamodb';
 import { Notification } from 'src/application/domain/entities/notification.entity';
 import { NotificationRepository } from 'src/application/repositories/notification.repository';
-import { GSI2_INDEX_NAME, TABLE_NAME } from '../../dynamo-client';
+import { GSI1_INDEX_NAME, GSI2_INDEX_NAME, TABLE_NAME } from '../../dynamo-client';
 import { NotificationEntityToModelMapper } from './mappers/notification-entity-to-model.mapper';
 import { NotificationModelToEntityMapper } from './mappers/notification-model-to-entity.mapper';
 
@@ -14,10 +14,8 @@ export class DynamoNotificationRepository implements NotificationRepository {
     await this.dynamoClient.send(command);
   }
 
-  public async recreate(notification: Notification): Promise<void> {
+  public async update(notification: Notification): Promise<void> {
     const command = NotificationEntityToModelMapper.map(notification);
-
-    delete command.input.Item.TTL;
 
     await this.dynamoClient.send(command);
   }
@@ -61,7 +59,8 @@ export class DynamoNotificationRepository implements NotificationRepository {
 
     const command = new QueryCommand({
       TableName: TABLE_NAME,
-      KeyConditionExpression: 'PK = :pk AND begins_with(SK, :sk)',
+      IndexName: GSI1_INDEX_NAME,
+      KeyConditionExpression: 'GSI1PK = :pk AND begins_with(GSI1SK, :sk)',
       ExpressionAttributeValues: {
         ':pk': `NOTIFICATION#${accountId}`,
         ':sk': `NOTIFICATION#${status.toUpperCase()}`
@@ -102,7 +101,7 @@ export class DynamoNotificationRepository implements NotificationRepository {
         ':pk': 'NOTIFICATION',
         ':sk': `NOTIFICATION#${notificationDate}`
       },
-      ExclusiveStartKey: lastEvaluatedKey,
+      ExclusiveStartKey: lastEvaluatedKey
     });
 
     const result = await this.dynamoClient.send(command);

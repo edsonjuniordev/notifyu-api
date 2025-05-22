@@ -1,14 +1,13 @@
 import { APIGatewayProxyEventV2 } from 'aws-lambda';
-import { BodyParser } from '../utils/body-parser';
-import { WebhookEventType, WebhookRequest } from './webhook.dto';
-import { WebhookValidator } from '../validators/webhook.validator';
-import { ResponseParser } from '../utils/response-parser';
-import { ErrorHandler } from '../utils/error-handler';
+import { ExpireOrderUsecase } from 'src/application/usecases/order/expire-order/expire-order';
 import { PayOrderUsecase } from 'src/application/usecases/order/pay-order/pay-order';
-import { DynamoOrderRepository } from 'src/infra/database/dynamo/repositories/order/order.repository';
 import { dynamoClient } from 'src/infra/database/dynamo/dynamo-client';
 import { DynamoAccountRepository } from 'src/infra/database/dynamo/repositories/account/account.repository';
-import { ExpireOrderUsecase } from 'src/application/usecases/order/expire-order/expire-order';
+import { DynamoOrderRepository } from 'src/infra/database/dynamo/repositories/order/order.repository';
+import { BodyParser } from '../utils/body-parser';
+import { ResponseParser } from '../utils/response-parser';
+import { WebhookValidator } from '../validators/webhook.validator';
+import { WebhookEventType, WebhookRequest } from './webhook.dto';
 
 const orderRepository = new DynamoOrderRepository(dynamoClient);
 const accountRepository = new DynamoAccountRepository(dynamoClient);
@@ -17,6 +16,7 @@ const accountRepository = new DynamoAccountRepository(dynamoClient);
 const USECASE_MAP = new Map<string, any>();
 USECASE_MAP.set(WebhookEventType.PAYMENT_CONFIRMED, new PayOrderUsecase(orderRepository, accountRepository));
 USECASE_MAP.set(WebhookEventType.PAYMENT_OVERDUE, new ExpireOrderUsecase(orderRepository));
+USECASE_MAP.set(WebhookEventType.PAYMENT_RECEIVED, new PayOrderUsecase(orderRepository, accountRepository));
 
 export async function handler(event: APIGatewayProxyEventV2) {
   try {
@@ -42,8 +42,9 @@ export async function handler(event: APIGatewayProxyEventV2) {
 
     await useCase.execute(usecaseInput);
 
-    return ResponseParser.parse(200);
   } catch (error) {
-    return ErrorHandler.handle(error);
+    console.log('🚀 ~ handler ~ error:', error);
   }
+
+  return ResponseParser.parse(200);
 }
