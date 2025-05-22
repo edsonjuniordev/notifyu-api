@@ -37,6 +37,10 @@ provider:
               - ""
               - - !GetAtt NotifyuTable.Arn
                 - "/index/GSI1"
+            - Fn::Join:
+              - ""
+              - - !GetAtt NotifyuTable.Arn
+                - "/index/GSI2"
 
 package:
   individually: true
