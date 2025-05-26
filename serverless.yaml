@@ -124,6 +124,12 @@ functions:
       - httpApi:
           path: /auth/signin
           method: POST
+  getAccount:
+    handler: src/functions/account/get-account.handler
+    events:
+      - httpApi:
+          path: /accounts
+          method: GET
   createApiKey:
     handler: src/functions/api-key/create-api-key.handler
     events:

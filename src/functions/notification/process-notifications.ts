@@ -9,8 +9,10 @@ const processNotificationUsecase = new ProcessNotificationUsecase(notificationRe
 
 export async function handler() {
   const now = new Date();
+  console.log('🚀 ~ handler ~ now:', now);
 
   const datetime = Datetime.roundToExactMinute(now);
+  console.log('🚀 ~ handler ~ datetime:', datetime);
 
   const notifications = await getNotifications(datetime.toISOString());
 

@@ -15,7 +15,7 @@ export class NotificationEntityToModelMapper {
         GSI1PK: `NOTIFICATION#${notification.getAccountId()}`,
         GSI1SK: `NOTIFICATION#${notification.getStatus()}#${notification.getId()}`,
         GSI2PK: 'NOTIFICATION',
-        GSI2SK: `NOTIFICATION#${dateTime}`,
+        GSI2SK: `NOTIFICATION#${Datetime.roundToExactMinute(new Date(dateTime))}`,
         type: 'NOTIFICATION',
         id: notification.getId(),
         accountId: notification.getAccountId(),
