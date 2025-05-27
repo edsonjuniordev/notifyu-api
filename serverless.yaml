@@ -13,6 +13,7 @@ provider:
     ASAAS_BASE_PATH: ${env:ASAAS_BASE_PATH}
     WEBHOOK_API_KEY: ${env:WEBHOOK_API_KEY}
   httpApi:
+    cors: true
     authorizers:
       authAuthorizer:
         type: request
