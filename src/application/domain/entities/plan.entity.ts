@@ -17,6 +17,8 @@ type WithDto = {
   httpNotificationQuantity: number;
   amount: number;
   status: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export class Plan {
@@ -25,8 +27,10 @@ export class Plan {
     private name: string,
     private httpNotificationQuantity: number,
     private amount: number,
-    private status: PlanStatus
-  ) {}
+    private status: PlanStatus,
+    private createdAt: string,
+    private updatedAt: string
+  ) { }
 
   public static create({
     name,
@@ -34,13 +38,16 @@ export class Plan {
     amount
   }: CreateDto): Plan {
     const id = GenerateULID.generate();
+    const now = new Date().toISOString();
 
     return new Plan(
       id,
       name,
       httpNotificationQuantity,
       amount,
-      PlanStatus.ENABLED
+      PlanStatus.ENABLED,
+      now,
+      now
     );
   }
 
@@ -49,14 +56,18 @@ export class Plan {
     name,
     httpNotificationQuantity,
     amount,
-    status
+    status,
+    createdAt,
+    updatedAt
   }: WithDto): Plan {
     return new Plan(
       id,
       name,
       httpNotificationQuantity,
       amount,
-      PlanStatus[status]
+      PlanStatus[status],
+      createdAt,
+      updatedAt
     );
   }
 
@@ -78,5 +89,13 @@ export class Plan {
 
   public getStatus(): PlanStatus {
     return this.status;
+  }
+
+  public getCreatedAt(): string {
+    return this.createdAt;
+  }
+
+  public getUpdatedAt(): string {
+    return this.updatedAt;
   }
 }

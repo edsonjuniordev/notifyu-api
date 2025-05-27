@@ -10,6 +10,8 @@ export class OrderModelToEntityMapper {
       amount: model.amount,
       httpNotificationQuantity: model.httpNotificationQuantity,
       status: model.status,
+      createdAt: model.createdAt,
+      updatedAt: model.updatedAt,
       externalId: model.externalId,
       invoiceUrl: model.invoiceUrl,
     });

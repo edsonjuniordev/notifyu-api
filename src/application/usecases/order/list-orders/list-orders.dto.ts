@@ -13,7 +13,8 @@ export type ListOrdersOutputDto = {
     amount: number;
     httpNotificationQuantity: number;
     status: string;
-    externalId?: string;
+    createdAt: string;
+    updatedAt: string;
     invoiceUrl?: string;
   }[]
 }

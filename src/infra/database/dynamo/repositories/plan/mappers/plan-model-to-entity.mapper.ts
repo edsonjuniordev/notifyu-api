@@ -9,6 +9,8 @@ export class PlanModelToEntityMapper {
       httpNotificationQuantity: model.httpNotificationQuantity,
       amount: model.amount,
       status: model.status,
+      createdAt: model.createdAt,
+      updatedAt: model.updatedAt,
     });
   }
 }

@@ -20,6 +20,8 @@ type WithDto = {
   amount: number;
   httpNotificationQuantity: number;
   status: string;
+  createdAt: string;
+  updatedAt: string;
   externalId?: string;
   invoiceUrl?: string;
 }
@@ -32,9 +34,11 @@ export class Order {
     private amount: number,
     private httpNotificationQuantity: number,
     private status: OrderStatus,
+    private createdAt: string,
+    private updatedAt: string,
     private externalId?: string,
     private invoiceUrl?: string
-  ) {}
+  ) { }
 
   public static create({
     accountId,
@@ -44,8 +48,9 @@ export class Order {
   }: CreateDto): Order {
     const id = GenerateULID.generate();
     const status = OrderStatus.PENDING;
+    const now = new Date().toISOString();
 
-    return new Order(id, accountId, planId, amount, httpNotificationQuantity, status);
+    return new Order(id, accountId, planId, amount, httpNotificationQuantity, status, now, now);
   }
 
   public static with({
@@ -55,6 +60,8 @@ export class Order {
     amount,
     httpNotificationQuantity,
     status,
+    createdAt,
+    updatedAt,
     externalId,
     invoiceUrl
   }: WithDto): Order {
@@ -65,6 +72,8 @@ export class Order {
       amount,
       httpNotificationQuantity,
       OrderStatus[status],
+      createdAt,
+      updatedAt,
       externalId,
       invoiceUrl
     );
@@ -94,6 +103,14 @@ export class Order {
     return this.status;
   }
 
+  public getCreatedAt(): string {
+    return this.createdAt;
+  }
+
+  public getUpdatedAt(): string {
+    return this.updatedAt;
+  }
+
   public getExternalId(): string {
     return this.externalId;
   }
@@ -102,12 +119,18 @@ export class Order {
     return this.invoiceUrl;
   }
 
+  private update() {
+    this.updatedAt = new Date().toISOString();
+  }
+
   public addExternalId(externalId: string) {
     this.externalId = externalId;
+    this.update();
   }
 
   public addInvoiceUrl(invoiceUrl: string) {
     this.invoiceUrl = invoiceUrl;
+    this.update();
   }
 
   public pay() {
@@ -115,12 +138,14 @@ export class Order {
       throw new Error(`unable to update status because it is different from ${OrderStatus.PENDING} and ${OrderStatus.EXPIRED}`);
     }
     this.status = OrderStatus.PAID;
+    this.update();
   }
 
-    public expire() {
+  public expire() {
     if (this.status !== OrderStatus.PENDING) {
       throw new Error(`unable to update status because it is different from ${OrderStatus.PENDING}`);
     }
     this.status = OrderStatus.EXPIRED;
+    this.update();
   }
 }

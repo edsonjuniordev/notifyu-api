@@ -8,4 +8,5 @@ export type GetAccountOutputDto = {
   email: string;
   document: string;
   httpNotificationQuantity: number;
+  createdAt: string;
 }

@@ -20,9 +20,10 @@ export class OrderEntityToModelMapper {
         amount: order.getAmount(),
         httpNotificationQuantity: order.getHttpNotificationQuantity(),
         status: order.getStatus(),
+        createdAt: order.getCreatedAt(),
+        updatedAt: order.getUpdatedAt(),
         externalId: order.getExternalId(),
         invoiceUrl: order.getInvoiceUrl()
-
       },
     });
   }

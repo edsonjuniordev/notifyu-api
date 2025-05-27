@@ -54,7 +54,9 @@ describe('create-notification', () => {
         document: '12345678910',
         password: 'password',
         httpNotificationQuantity: 1,
-        externalReference: 'id'
+        externalReference: 'id',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       });
 
       accountRepositoryMock.findByIdAndLock = jest.fn().mockResolvedValueOnce(account);
@@ -85,7 +87,9 @@ describe('create-notification', () => {
         document: '12345678910',
         password: 'password',
         httpNotificationQuantity: 0,
-        externalReference: 'id'
+        externalReference: 'id',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       });
 
       accountRepositoryMock.findByIdAndLock = jest.fn().mockResolvedValueOnce(account);

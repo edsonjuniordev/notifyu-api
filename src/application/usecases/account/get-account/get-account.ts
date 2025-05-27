@@ -17,6 +17,7 @@ export class GetAccountUsecase {
       email: account.getEmail(),
       document: account.getDocument(),
       httpNotificationQuantity: account.getHttpNotificationQuantity(),
+      createdAt: account.getCreatedAt(),
     };
   }
 }

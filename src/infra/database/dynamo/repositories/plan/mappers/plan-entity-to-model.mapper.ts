@@ -17,6 +17,8 @@ export class PlanEntityToModelMapper {
         amount: plan.getAmount(),
         httpNotificationQuantity: plan.getHttpNotificationQuantity(),
         status: plan.getStatus().toString(),
+        createdAt: plan.getCreatedAt(),
+        updatedAt: plan.getUpdatedAt(),
       },
     });
   }

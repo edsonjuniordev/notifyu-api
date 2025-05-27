@@ -19,6 +19,8 @@ export class AccountEntityToModelMapper {
         password: account.getPassword(),
         httpNotificationQuantity: account.getHttpNotificationQuantity(),
         externalReference: account.getExternalReference(),
+        createdAt: account.getCreatedAt(),
+        updatedAt: account.getUpdatedAt(),
         locked: false
       },
     });

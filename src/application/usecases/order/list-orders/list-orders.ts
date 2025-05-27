@@ -30,6 +30,8 @@ export class ListOrdersUsecase {
         planId: order.getPlanId(),
         amount: order.getAmount(),
         httpNotificationQuantity: order.getHttpNotificationQuantity(),
+        createdAt: order.getCreatedAt(),
+        updatedAt: order.getUpdatedAt(),
         status: order.getStatus(),
         invoiceUrl: order.getInvoiceUrl(),
       }))

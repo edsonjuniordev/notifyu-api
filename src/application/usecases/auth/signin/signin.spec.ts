@@ -79,7 +79,9 @@ describe('signin', () => {
         document: '12345678910',
         password: '$2b$10$yLOcgQ5kbJonWGxgc5DxYOxrFSK2RTNaUZMkh.Ztc4kM16p51GiOq',
         httpNotificationQuantity: 0,
-        externalReference: 'id'
+        externalReference: 'id',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       });
       accountRepositoryMock.findByEmail = jest.fn().mockResolvedValueOnce(account);
 
@@ -111,7 +113,9 @@ describe('signin', () => {
         document: '12345678910',
         password: '12345678',
         httpNotificationQuantity: 0,
-        externalReference: 'id'
+        externalReference: 'id',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       });
       accountRepositoryMock.findByEmail = jest.fn().mockResolvedValueOnce(account);
 

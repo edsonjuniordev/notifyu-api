@@ -6,5 +6,6 @@ export type ListApiKeysOutputDto = {
   apiKeys: {
     id: string;
     apiKey: string;
+    createdAt: string;
   }[];
 }

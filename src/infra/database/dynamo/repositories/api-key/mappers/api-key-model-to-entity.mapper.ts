@@ -7,6 +7,8 @@ export class ApiKeyModelToEntityMapper {
       id: model.id,
       accountId: model.accountId,
       apiKey: model.apiKey,
+      createdAt: model.createdAt,
+      updatedAt: model.updatedAt,
     });
   }
 }

@@ -15,6 +15,8 @@ export class ApiKeyEntityToModelMapper {
         id: apiKey.getId(),
         accountId: apiKey.getAccountId(),
         apiKey: apiKey.getApiKey(),
+        createdAt: apiKey.getCreatedAt(),
+        updatedAt: apiKey.getUpdatedAt(),
       },
     });
   }
