@@ -11,7 +11,7 @@ import { AsaasPaymentService } from 'src/infra/services/payment/payment-service'
 
 const accountRepository = new DynamoAccountRepository(dynamoClient);
 
-const paymentService = new AsaasPaymentService();
+const paymentService = new AsaasPaymentService(accountRepository);
 
 const signupUsecase = new SignupUsecase(accountRepository, paymentService);
 
