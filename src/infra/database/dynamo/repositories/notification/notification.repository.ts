@@ -20,6 +20,29 @@ export class DynamoNotificationRepository implements NotificationRepository {
     await this.dynamoClient.send(command);
   }
 
+  public async findById(notificationId: string, accountId: string): Promise<Notification | null> {
+    const queryCommand = new QueryCommand({
+      TableName: TABLE_NAME,
+      KeyConditionExpression: 'PK = :pk and SK = :sk',
+      ExpressionAttributeValues: {
+        ':pk': `NOTIFICATION#${accountId}`,
+        ':sk': `NOTIFICATION#${notificationId}`,
+      }
+    });
+
+    const result = await this.dynamoClient.send(queryCommand);
+
+    const items = result.Items;
+
+    if (items.length === 0) {
+      return null;
+    }
+
+    const notification = NotificationModelToEntityMapper.map(items[0]);
+
+    return notification;
+  }
+
   public async list(accountId: string, page: string): Promise<{ notifications: Notification[]; nextPage: string; }> {
     const lastEvaluatedKey = page ? this.decodeLastEvaluatedKey(page) : undefined;
 

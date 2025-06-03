@@ -8,17 +8,18 @@ describe('process-notification', () => {
   let processNotificationUsecase: ProcessNotificationUsecase;
   let processNotificationInputDto: ProcessNotificationInputDto;
 
-  let notificationRepository: NotificationRepository;
+  let notificationRepositoryMock: NotificationRepository;
 
   beforeEach(() => {
-    notificationRepository = {
+    notificationRepositoryMock = {
       create: jest.fn().mockResolvedValueOnce(null),
       list: jest.fn().mockResolvedValueOnce([]),
       listByStatus: jest.fn().mockResolvedValueOnce([]),
-      update: jest.fn().mockResolvedValueOnce(null)
+      update: jest.fn().mockResolvedValueOnce(null),
+      findById: jest.fn().mockResolvedValueOnce(null),
     };
 
-    processNotificationUsecase = new ProcessNotificationUsecase(notificationRepository);
+    processNotificationUsecase = new ProcessNotificationUsecase(notificationRepositoryMock);
 
     processNotificationInputDto = {
       id: 'id',
@@ -50,7 +51,7 @@ describe('process-notification', () => {
       await processNotificationUsecase.execute(processNotificationInputDto);
 
       expect(fetch).toHaveBeenCalled();
-      expect(notificationRepository.update).toHaveBeenCalled();
+      expect(notificationRepositoryMock.update).toHaveBeenCalled();
     });
 
     it('should process notification with fail', async () => {
@@ -61,7 +62,7 @@ describe('process-notification', () => {
       await processNotificationUsecase.execute(processNotificationInputDto);
 
       expect(fetch).toHaveBeenCalled();
-      expect(notificationRepository.update).toHaveBeenCalled();
+      expect(notificationRepositoryMock.update).toHaveBeenCalled();
     });
 
     it('should process notification with error', async () => {
@@ -70,7 +71,7 @@ describe('process-notification', () => {
       await processNotificationUsecase.execute(processNotificationInputDto);
 
       expect(fetch).toHaveBeenCalled();
-      expect(notificationRepository.update).toHaveBeenCalled();
+      expect(notificationRepositoryMock.update).toHaveBeenCalled();
     });
    });
 });

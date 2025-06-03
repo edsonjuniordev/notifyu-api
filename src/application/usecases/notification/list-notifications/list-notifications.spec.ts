@@ -7,17 +7,18 @@ describe('list-notifications', () => {
   let listNotificationsUsecase: ListNotificationsUsecase;
   let listNotificationsInputDto: ListNotificationsInputDto;
 
-  let notificationRepository: NotificationRepository;
+  let notificationRepositoryMock: NotificationRepository;
 
   beforeEach(() => {
-    notificationRepository = {
+    notificationRepositoryMock = {
       create: jest.fn().mockResolvedValueOnce(null),
       list: jest.fn().mockResolvedValueOnce([]),
       listByStatus: jest.fn().mockResolvedValueOnce([]),
-      update: jest.fn().mockResolvedValueOnce(null)
+      update: jest.fn().mockResolvedValueOnce(null),
+      findById: jest.fn().mockResolvedValueOnce(null),
     };
 
-    listNotificationsUsecase = new ListNotificationsUsecase(notificationRepository);
+    listNotificationsUsecase = new ListNotificationsUsecase(notificationRepositoryMock);
 
     listNotificationsInputDto = {
       accountId: 'accountId',
@@ -42,7 +43,7 @@ describe('list-notifications', () => {
         notificationType: 'http'
       });
 
-      notificationRepository.list = jest.fn().mockResolvedValueOnce({
+      notificationRepositoryMock.list = jest.fn().mockResolvedValueOnce({
         notifications: [notification],
         page: 'page'
       });
@@ -52,8 +53,8 @@ describe('list-notifications', () => {
         page: listNotificationsInputDto.page
       });
 
-      expect(notificationRepository.list).toHaveBeenCalledTimes(1);
-      expect(notificationRepository.list).toHaveBeenCalledWith(listNotificationsInputDto.accountId, listNotificationsInputDto.page);
+      expect(notificationRepositoryMock.list).toHaveBeenCalledTimes(1);
+      expect(notificationRepositoryMock.list).toHaveBeenCalledWith(listNotificationsInputDto.accountId, listNotificationsInputDto.page);
     });
 
     it('should list notifications by status', async () => {
@@ -65,7 +66,7 @@ describe('list-notifications', () => {
         notificationType: 'HTTP'
       });
 
-      notificationRepository.listByStatus = jest.fn().mockResolvedValueOnce({
+      notificationRepositoryMock.listByStatus = jest.fn().mockResolvedValueOnce({
         notifications: [notification],
         nextPage: 'nextPage'
       });
@@ -76,8 +77,8 @@ describe('list-notifications', () => {
         status: listNotificationsInputDto.status
       });
 
-      expect(notificationRepository.listByStatus).toHaveBeenCalledTimes(1);
-      expect(notificationRepository.listByStatus).toHaveBeenCalledWith(listNotificationsInputDto.accountId, listNotificationsInputDto.page, listNotificationsInputDto.status);
+      expect(notificationRepositoryMock.listByStatus).toHaveBeenCalledTimes(1);
+      expect(notificationRepositoryMock.listByStatus).toHaveBeenCalledWith(listNotificationsInputDto.accountId, listNotificationsInputDto.page, listNotificationsInputDto.status);
     });
   });
 });

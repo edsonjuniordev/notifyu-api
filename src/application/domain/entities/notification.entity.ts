@@ -3,7 +3,8 @@ import { GenerateULID } from 'src/application/utils/generate-ulid';
 export enum NotificationStatus {
   CREATED = 'CREATED',
   NOTIFIED = 'NOTIFIED',
-  FAILED = 'FAILED'
+  FAILED = 'FAILED',
+  CANCELED = 'CANCELED'
 }
 
 export enum NotificationType {
@@ -140,7 +141,7 @@ export class Notification {
 
   public failed() {
     if (this.status !== NotificationStatus.CREATED && this.status !== NotificationStatus.NOTIFIED) {
-      throw new Error(`unable to update status because it is different from ${NotificationStatus.CREATED}`);
+      throw new Error(`unable to update status because it is different from ${NotificationStatus.CREATED} and ${NotificationStatus.NOTIFIED}`);
     }
 
     this.status = NotificationStatus.FAILED;
@@ -149,5 +150,14 @@ export class Notification {
 
   private update() {
     this.updatedAt = new Date().toISOString();
+  }
+
+  public cancel() {
+    if (this.status !== NotificationStatus.CREATED) {
+      throw new Error(`unable to update status because it is different from ${NotificationStatus.CREATED}`);
+    }
+
+    this.status = NotificationStatus.CANCELED;
+    this.update();
   }
 }

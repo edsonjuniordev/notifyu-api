@@ -167,6 +167,14 @@ functions:
           method: GET
           authorizer:
             name: authAuthorizer
+  cancelNotification:
+    handler: src/functions/notification/cancel-notification.handler
+    events:
+      - httpApi:
+          path: /notifications/{id}
+          method: DELETE
+          authorizer:
+            name: authAuthorizer
   createPlan:
     handler: src/functions/plan/create-plan.handler
     events:
