@@ -11,6 +11,7 @@ export class NotificationModelToEntityMapper {
       notificationDate: model.notificationDate,
       destination: model.destination,
       notificationType: model.notificationType,
+      notifiedAt: model.notifiedAt,
       createdAt: model.createdAt,
       updatedAt: model.updatedAt,
     });

@@ -31,6 +31,7 @@ export class ListNotificationsUsecase {
         status: notification.getStatus(),
         notificationDate: notification.getNotificationDate(),
         destination: notification.getDestination(),
+        notifiedAt: notification.getNotifiedAt(),
         createdAt: notification.getCreatedAt(),
         updatedAt: notification.getUpdatedAt(),
       }))

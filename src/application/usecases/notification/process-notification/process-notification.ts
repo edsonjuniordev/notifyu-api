@@ -13,6 +13,7 @@ export class ProcessNotificationUsecase {
     notificationDate,
     destination,
     notificationType,
+    notifiedAt,
     createdAt,
     updatedAt,
   }: ProcessNotificationInputDto): Promise<void> {
@@ -24,6 +25,7 @@ export class ProcessNotificationUsecase {
       notificationDate,
       destination,
       notificationType,
+      notifiedAt,
       createdAt,
       updatedAt,
     });
