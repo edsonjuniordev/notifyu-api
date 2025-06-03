@@ -1,13 +1,10 @@
 import { APIGatewayProxyEventV2 } from 'aws-lambda';
 import { GetAccountUsecase } from 'src/application/usecases/account/get-account/get-account';
-import { dynamoClient } from 'src/infra/database/dynamo/dynamo-client';
-import { DynamoAccountRepository } from 'src/infra/database/dynamo/repositories/account/account.repository';
+import { dynamoAccountRepository } from 'src/infra/database/dynamo/repositories/account/account.repository';
 import { ErrorHandler } from '../utils/error-handler';
 import { ResponseParser } from '../utils/response-parser';
 
-const accountRepository = new DynamoAccountRepository(dynamoClient);
-
-const getAccountUsecase = new GetAccountUsecase(accountRepository);
+const getAccountUsecase = new GetAccountUsecase(dynamoAccountRepository);
 
 export async function handler(event: APIGatewayProxyEventV2) {
   try {

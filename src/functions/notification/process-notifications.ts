@@ -1,11 +1,9 @@
 import { Notification } from 'src/application/domain/entities/notification.entity';
 import { ProcessNotificationUsecase } from 'src/application/usecases/notification/process-notification/process-notification';
 import { Datetime } from 'src/application/utils/datetime';
-import { dynamoClient } from 'src/infra/database/dynamo/dynamo-client';
-import { DynamoNotificationRepository } from 'src/infra/database/dynamo/repositories/notification/notification.repository';
+import { dynamoNotificationRepository } from 'src/infra/database/dynamo/repositories/notification/notification.repository';
 
-const notificationRepository = new DynamoNotificationRepository(dynamoClient);
-const processNotificationUsecase = new ProcessNotificationUsecase(notificationRepository);
+const processNotificationUsecase = new ProcessNotificationUsecase(dynamoNotificationRepository);
 
 export async function handler() {
   const now = new Date();
@@ -33,7 +31,7 @@ export async function handler() {
 }
 
 async function getNotifications(datetime: string, page = '', accumulatedNotifications: Notification[] = []) {
-  const { notifications, nextPage } = await notificationRepository.listByNotificationDateAndStatusCreated(page, datetime);
+  const { notifications, nextPage } = await dynamoNotificationRepository.listByNotificationDateAndStatusCreated(page, datetime);
 
   const newAccumulatedNotifications = [...accumulatedNotifications, ...notifications];
 

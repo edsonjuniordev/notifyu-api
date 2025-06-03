@@ -1,13 +1,10 @@
 import { APIGatewayProxyEventV2 } from 'aws-lambda';
-import { dynamoClient } from 'src/infra/database/dynamo/dynamo-client';
-import { DynamoApiKeyRepository } from 'src/infra/database/dynamo/repositories/api-key/api-key.repository';
 import { CreateApiKeyUsecase } from 'src/application/usecases/api-key/create-api-key/create-api-key';
-import { ResponseParser } from '../utils/response-parser';
+import { dynamoApiKeyRepository } from 'src/infra/database/dynamo/repositories/api-key/api-key.repository';
 import { ErrorHandler } from '../utils/error-handler';
+import { ResponseParser } from '../utils/response-parser';
 
-const apiKeyRepository = new DynamoApiKeyRepository(dynamoClient);
-
-const createApiKeyUsecase = new CreateApiKeyUsecase(apiKeyRepository);
+const createApiKeyUsecase = new CreateApiKeyUsecase(dynamoApiKeyRepository);
 
 export async function handler(event: APIGatewayProxyEventV2) {
   try {

@@ -1,19 +1,14 @@
 import { APIGatewayProxyEventV2 } from 'aws-lambda';
 import { SignupUsecase } from 'src/application/usecases/auth/signup/signup';
 import { SignupInputDto } from 'src/application/usecases/auth/signup/signup.dto';
-import { dynamoClient } from 'src/infra/database/dynamo/dynamo-client';
-import { DynamoAccountRepository } from 'src/infra/database/dynamo/repositories/account/account.repository';
-import { SignupValidator } from '../validators/signup.validator';
+import { dynamoAccountRepository } from 'src/infra/database/dynamo/repositories/account/account.repository';
+import { asaasPaymentService } from 'src/infra/services/payment/payment-service';
 import { BodyParser } from '../utils/body-parser';
-import { ResponseParser } from '../utils/response-parser';
 import { ErrorHandler } from '../utils/error-handler';
-import { AsaasPaymentService } from 'src/infra/services/payment/payment-service';
+import { ResponseParser } from '../utils/response-parser';
+import { SignupValidator } from '../validators/signup.validator';
 
-const accountRepository = new DynamoAccountRepository(dynamoClient);
-
-const paymentService = new AsaasPaymentService(accountRepository);
-
-const signupUsecase = new SignupUsecase(accountRepository, paymentService);
+const signupUsecase = new SignupUsecase(dynamoAccountRepository, asaasPaymentService);
 
 export async function handler(event: APIGatewayProxyEventV2) {
   try {

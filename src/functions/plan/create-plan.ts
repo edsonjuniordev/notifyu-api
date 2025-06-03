@@ -1,16 +1,13 @@
 import { APIGatewayProxyEventV2 } from 'aws-lambda';
 import { CreatePlanUsecase } from 'src/application/usecases/plan/create-plan/create-plan';
-import { dynamoClient } from 'src/infra/database/dynamo/dynamo-client';
-import { DynamoPlanRepository } from 'src/infra/database/dynamo/repositories/plan/plan.repository';
-import { BodyParser } from '../utils/body-parser';
 import { CreatePlanInputDto } from 'src/application/usecases/plan/create-plan/create-plan.dto';
-import { CreatePlanValidator } from '../validators/create-plan.validator';
-import { ResponseParser } from '../utils/response-parser';
+import { dynamoPlanRepository } from 'src/infra/database/dynamo/repositories/plan/plan.repository';
+import { BodyParser } from '../utils/body-parser';
 import { ErrorHandler } from '../utils/error-handler';
+import { ResponseParser } from '../utils/response-parser';
+import { CreatePlanValidator } from '../validators/create-plan.validator';
 
-const planRepository = new DynamoPlanRepository(dynamoClient);
-
-const createPlanUsecase = new CreatePlanUsecase(planRepository);
+const createPlanUsecase = new CreatePlanUsecase(dynamoPlanRepository);
 
 export async function handler(event: APIGatewayProxyEventV2) {
   try {

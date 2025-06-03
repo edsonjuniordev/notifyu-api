@@ -1,13 +1,10 @@
 import { APIGatewayProxyEventV2 } from 'aws-lambda';
 import { ListOrdersUsecase } from 'src/application/usecases/order/list-orders/list-orders';
-import { dynamoClient } from 'src/infra/database/dynamo/dynamo-client';
-import { DynamoOrderRepository } from 'src/infra/database/dynamo/repositories/order/order.repository';
-import { ResponseParser } from '../utils/response-parser';
+import { dynamoOrderRepository } from 'src/infra/database/dynamo/repositories/order/order.repository';
 import { ErrorHandler } from '../utils/error-handler';
+import { ResponseParser } from '../utils/response-parser';
 
-const orderRepository = new DynamoOrderRepository(dynamoClient);
-
-const listOrdersUsecase = new ListOrdersUsecase(orderRepository);
+const listOrdersUsecase = new ListOrdersUsecase(dynamoOrderRepository);
 
 export async function handler(event: APIGatewayProxyEventV2) {
   try {

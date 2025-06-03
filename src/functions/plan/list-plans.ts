@@ -1,12 +1,9 @@
 import { ListPlansUsecase } from 'src/application/usecases/plan/list-plans/list-plans';
-import { dynamoClient } from 'src/infra/database/dynamo/dynamo-client';
-import { DynamoPlanRepository } from 'src/infra/database/dynamo/repositories/plan/plan.repository';
-import { ResponseParser } from '../utils/response-parser';
+import { dynamoPlanRepository } from 'src/infra/database/dynamo/repositories/plan/plan.repository';
 import { ErrorHandler } from '../utils/error-handler';
+import { ResponseParser } from '../utils/response-parser';
 
-const planRepository = new DynamoPlanRepository(dynamoClient);
-
-const listPlansUsecase = new ListPlansUsecase(planRepository);
+const listPlansUsecase = new ListPlansUsecase(dynamoPlanRepository);
 
 export async function handler() {
   try {

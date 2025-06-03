@@ -2,6 +2,7 @@ import { Account } from 'src/application/domain/entities/account.entity';
 import { Order } from 'src/application/domain/entities/order.entity';
 import { AccountRepository } from 'src/application/repositories/account.repository';
 import { PaymentService } from 'src/application/services/payment-service';
+import { dynamoAccountRepository } from 'src/infra/database/dynamo/repositories/account/account.repository';
 
 export class AsaasPaymentService implements PaymentService {
   private ASAAS_BASE_PATH = process.env.ASAAS_BASE_PATH;
@@ -68,3 +69,5 @@ export class AsaasPaymentService implements PaymentService {
     };
   }
 }
+
+export const asaasPaymentService = new AsaasPaymentService(dynamoAccountRepository);
