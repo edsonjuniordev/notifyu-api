@@ -54,6 +54,7 @@ export class DynamoNotificationRepository implements NotificationRepository {
       },
       Limit: 10,
       ExclusiveStartKey: lastEvaluatedKey,
+      ScanIndexForward: false
     });
 
     const result = await this.dynamoClient.send(command);
@@ -90,6 +91,7 @@ export class DynamoNotificationRepository implements NotificationRepository {
       },
       Limit: 10,
       ExclusiveStartKey: lastEvaluatedKey,
+      ScanIndexForward: false
     });
 
     const result = await this.dynamoClient.send(command);
@@ -124,7 +126,8 @@ export class DynamoNotificationRepository implements NotificationRepository {
         ':pk': 'NOTIFICATION',
         ':sk': `NOTIFICATION#${notificationDate}#CREATED`
       },
-      ExclusiveStartKey: lastEvaluatedKey
+      ExclusiveStartKey: lastEvaluatedKey,
+      ScanIndexForward: false
     });
 
     const result = await this.dynamoClient.send(command);

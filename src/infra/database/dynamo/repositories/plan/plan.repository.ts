@@ -45,6 +45,7 @@ export class DynamoPlanRepository implements PlanRepository {
       ExpressionAttributeValues: {
         ':pk': 'PLAN#ENABLED',
       },
+      ScanIndexForward: false
     });
 
     const result = await this.dynamoClient.send(command);
