@@ -25,6 +25,7 @@ export class DynamoOrderRepository implements OrderRepository {
       },
       Limit: 10,
       ExclusiveStartKey: lastEvaluatedKey,
+      ScanIndexForward: false
     });
 
     const result = await this.dynamoClient.send(command);
@@ -61,6 +62,7 @@ export class DynamoOrderRepository implements OrderRepository {
       },
       Limit: 10,
       ExclusiveStartKey: lastEvaluatedKey,
+      ScanIndexForward: false
     });
 
     const result = await this.dynamoClient.send(command);

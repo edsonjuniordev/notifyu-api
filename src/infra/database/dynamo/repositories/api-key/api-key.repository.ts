@@ -70,6 +70,7 @@ export class DynamoApiKeyRepository implements ApiKeyRepository {
         ':pk': `ACCOUNT#${accountId}`,
         ':sk': 'API_KEY#'
       },
+      ScanIndexForward: false
     });
 
     const result = await this.dynamoClient.send(command);
