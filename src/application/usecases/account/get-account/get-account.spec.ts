@@ -33,7 +33,7 @@ describe('get-account', () => {
   });
 
   describe('execute', () => {
-    it('should create an account', async () => {
+    it('should get an account', async () => {
       const account = Account.create({
         name: 'name',
         email: 'email',
@@ -44,6 +44,15 @@ describe('get-account', () => {
       accountRepositoryMock.findById = jest.fn().mockResolvedValueOnce(account);
 
       await getAccountUsecase.execute(getAccountInputDto);
+
+      expect(accountRepositoryMock.findById).toHaveBeenCalledTimes(1);
+      expect(accountRepositoryMock.findById).toHaveBeenCalledWith(getAccountInputDto.accountId);
+    });
+
+    it('should throw an error if the account does not exist', async () => {
+      await expect(getAccountUsecase.execute(getAccountInputDto)).rejects.toThrow(
+        'account not found',
+      );
 
       expect(accountRepositoryMock.findById).toHaveBeenCalledTimes(1);
       expect(accountRepositoryMock.findById).toHaveBeenCalledWith(getAccountInputDto.accountId);
