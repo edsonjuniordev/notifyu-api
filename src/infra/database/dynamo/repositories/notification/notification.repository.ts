@@ -113,7 +113,7 @@ export class DynamoNotificationRepository implements NotificationRepository {
     };
   }
 
-  public async listByNotificationDate(page: string, notificationDate: string): Promise<{ notifications: Notification[]; nextPage: string; }> {
+  public async listByNotificationDateAndStatusCreated(page: string, notificationDate: string): Promise<{ notifications: Notification[]; nextPage: string; }> {
     const lastEvaluatedKey = page ? this.decodeLastEvaluatedKey(page) : undefined;
 
     const command = new QueryCommand({
@@ -122,7 +122,7 @@ export class DynamoNotificationRepository implements NotificationRepository {
       KeyConditionExpression: 'GSI2PK = :pk AND GSI2SK = :sk',
       ExpressionAttributeValues: {
         ':pk': 'NOTIFICATION',
-        ':sk': `NOTIFICATION#${notificationDate}`
+        ':sk': `NOTIFICATION#${notificationDate}#CREATED`
       },
       ExclusiveStartKey: lastEvaluatedKey
     });
