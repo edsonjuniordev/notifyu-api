@@ -98,4 +98,8 @@ export class Plan {
   public getUpdatedAt(): string {
     return this.updatedAt;
   }
+
+  public isFree(): boolean {
+    return this.amount === 0;
+  }
 }

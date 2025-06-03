@@ -16,7 +16,7 @@ const planRepository = new DynamoPlanRepository(dynamoClient);
 const accountRepository = new DynamoAccountRepository(dynamoClient);
 const paymentService = new AsaasPaymentService(accountRepository);
 
-const createOrderUsecase = new CreateOrderUsecase(orderRepository, planRepository, paymentService);
+const createOrderUsecase = new CreateOrderUsecase(orderRepository, planRepository, paymentService, accountRepository);
 
 export async function handler(event: APIGatewayProxyEventV2) {
   try {

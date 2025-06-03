@@ -125,6 +125,8 @@ functions:
       - httpApi:
           path: /accounts
           method: GET
+          authorizer:
+            name: authAuthorizer
   createApiKey:
     handler: src/functions/api-key/create-api-key.handler
     events:
