@@ -6,7 +6,7 @@ import { Datetime } from 'src/application/utils/datetime';
 export class NotificationEntityToModelMapper {
   public static map(notification: Notification): PutCommand {
     const dateTime = Datetime.addHoursToIsoString(notification.getNotificationDate(), 3);
-
+    const notificationDate = Datetime.roundToExactMinute(new Date(dateTime)).toISOString();
 
     return new PutCommand({
       TableName: TABLE_NAME,
@@ -16,7 +16,7 @@ export class NotificationEntityToModelMapper {
         GSI1PK: `NOTIFICATION#${notification.getAccountId()}`,
         GSI1SK: `NOTIFICATION#${notification.getStatus()}#${notification.getId()}`,
         GSI2PK: 'NOTIFICATION',
-        GSI2SK: `NOTIFICATION#${Datetime.roundToExactMinute(new Date(dateTime)).toISOString()}`,
+        GSI2SK: `NOTIFICATION#${notificationDate}`,
         type: 'NOTIFICATION',
         id: notification.getId(),
         accountId: notification.getAccountId(),
@@ -25,6 +25,7 @@ export class NotificationEntityToModelMapper {
         notificationDate: notification.getNotificationDate(),
         destination: notification.getDestination(),
         notificationType: notification.getNotificationType(),
+        notifiedAt: notification.getNotifiedAt(),
         createdAt: notification.getCreatedAt(),
         updatedAt: notification.getUpdatedAt(),
       },

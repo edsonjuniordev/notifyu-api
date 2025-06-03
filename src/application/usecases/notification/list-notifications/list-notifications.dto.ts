@@ -12,6 +12,7 @@ export type ListNotificationsOutputDto = {
     status: string;
     notificationDate: string;
     destination: string;
+    notifiedAt: string;
     createdAt: string;
     updatedAt: string;
   }[];

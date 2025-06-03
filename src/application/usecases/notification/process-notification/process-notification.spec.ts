@@ -29,6 +29,7 @@ describe('process-notification', () => {
       notificationDate: 'notificationDate',
       destination: 'destination',
       notificationType: 'HTTP',
+      notifiedAt: 'notifiedAt',
       createdAt: 'createdAt',
       updatedAt: 'updatedAt',
     };

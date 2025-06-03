@@ -27,6 +27,7 @@ type WithDto = {
   notificationDate: string;
   destination: string;
   notificationType: string;
+  notifiedAt: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -40,6 +41,7 @@ export class Notification {
     private notificationDate: string,
     private destination: string,
     private notificationType: NotificationType,
+    private notifiedAt: string,
     private createdAt: string,
     private updatedAt: string
   ) { }
@@ -52,10 +54,9 @@ export class Notification {
     notificationType
   }: CreateDto): Notification {
     const id = GenerateULID.generate();
-
     const status = NotificationStatus.CREATED;
-
     const now = new Date().toISOString();
+    const notifiedAt = '';
 
     return new Notification(
       id,
@@ -65,6 +66,7 @@ export class Notification {
       notificationDate,
       destination,
       NotificationType[notificationType.toUpperCase()],
+      notifiedAt,
       now,
       now
     );
@@ -78,6 +80,7 @@ export class Notification {
     notificationDate,
     destination,
     notificationType,
+    notifiedAt,
     createdAt,
     updatedAt,
   }: WithDto): Notification {
@@ -89,6 +92,7 @@ export class Notification {
       notificationDate,
       destination,
       NotificationType[notificationType],
+      notifiedAt,
       createdAt,
       updatedAt
     );
@@ -122,6 +126,10 @@ export class Notification {
     return this.notificationType;
   }
 
+  public getNotifiedAt(): string {
+    return this.notifiedAt;
+  }
+
   public getCreatedAt(): string {
     return this.createdAt;
   }
@@ -136,6 +144,7 @@ export class Notification {
     }
 
     this.status = NotificationStatus.NOTIFIED;
+    this.notifiedAt = new Date().toISOString();
     this.update();
   }
 
