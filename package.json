@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "dev": "sls offline",
     "deploy:prod": "sls deploy --aws-profile notifyu-prod --stage prod",
     "deploy:dev": "sls deploy --aws-profile notifyu-dev --stage dev"
   },

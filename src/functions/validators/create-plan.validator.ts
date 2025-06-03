@@ -3,8 +3,8 @@ import { ZodError } from './types';
 
 const createPlanSchema = z.object({
   name: z.string().min(3),
-  httpNotificationQuantity: z.number().min(100),
-  amount: z.number().min(500)
+  httpNotificationQuantity: z.number().min(10),
+  amount: z.number()
 });
 
 export class CreatePlanValidator {
