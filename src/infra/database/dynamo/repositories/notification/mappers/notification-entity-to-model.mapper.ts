@@ -1,7 +1,7 @@
 import { PutCommand } from '@aws-sdk/lib-dynamodb';
 import { Notification } from 'src/application/domain/entities/notification.entity';
-import { TABLE_NAME } from '../../../dynamo-client';
 import { Datetime } from 'src/application/utils/datetime';
+import { TABLE_NAME } from '../../../dynamo-client';
 
 export class NotificationEntityToModelMapper {
   public static map(notification: Notification): PutCommand {
@@ -16,7 +16,7 @@ export class NotificationEntityToModelMapper {
         GSI1PK: `NOTIFICATION#${notification.getAccountId()}`,
         GSI1SK: `NOTIFICATION#${notification.getStatus()}#${notification.getId()}`,
         GSI2PK: 'NOTIFICATION',
-        GSI2SK: `NOTIFICATION#${notificationDate}`,
+        GSI2SK: `NOTIFICATION#${notificationDate}#${notification.getStatus().toString()}`,
         type: 'NOTIFICATION',
         id: notification.getId(),
         accountId: notification.getAccountId(),

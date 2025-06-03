@@ -24,6 +24,7 @@ export async function handler() {
     notificationDate: notification.getNotificationDate(),
     destination: notification.getDestination(),
     notificationType: notification.getNotificationType(),
+    notifiedAt: notification.getNotifiedAt(),
     createdAt: notification.getCreatedAt(),
     updatedAt: notification.getUpdatedAt(),
   }));
@@ -32,7 +33,7 @@ export async function handler() {
 }
 
 async function getNotifications(datetime: string, page = '', accumulatedNotifications: Notification[] = []) {
-  const { notifications, nextPage } = await notificationRepository.listByNotificationDate(page, datetime);
+  const { notifications, nextPage } = await notificationRepository.listByNotificationDateAndStatusCreated(page, datetime);
 
   const newAccumulatedNotifications = [...accumulatedNotifications, ...notifications];
 
