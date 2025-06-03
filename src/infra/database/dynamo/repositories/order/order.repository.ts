@@ -1,7 +1,7 @@
 import { DynamoDBDocumentClient, QueryCommand } from '@aws-sdk/lib-dynamodb';
 import { Order } from 'src/application/domain/entities/order.entity';
 import { OrderRepository } from 'src/application/repositories/order.repository';
-import { GSI1_INDEX_NAME, GSI2_INDEX_NAME, TABLE_NAME } from '../../dynamo-client';
+import { dynamoClient, GSI1_INDEX_NAME, GSI2_INDEX_NAME, TABLE_NAME } from '../../dynamo-client';
 import { OrderEntityToModelMapper } from './mappers/order-entity-to-model.mapper';
 import { OrderModelToEntityMapper } from './mappers/order-model-to-entity.mapper';
 
@@ -126,3 +126,5 @@ export class DynamoOrderRepository implements OrderRepository {
     return JSON.parse(Buffer.from(encodedKey, 'base64').toString('utf-8'));
   }
 }
+
+export const dynamoOrderRepository = new DynamoOrderRepository(dynamoClient);

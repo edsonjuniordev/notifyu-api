@@ -1,15 +1,11 @@
 import { APIGatewayProxyEventV2 } from 'aws-lambda';
 import { CancelNotificationUsecase } from 'src/application/usecases/notification/cancel-notification/cancel-notification';
-import { dynamoClient } from 'src/infra/database/dynamo/dynamo-client';
-import { DynamoAccountRepository } from 'src/infra/database/dynamo/repositories/account/account.repository';
-import { DynamoNotificationRepository } from 'src/infra/database/dynamo/repositories/notification/notification.repository';
-import { ResponseParser } from '../utils/response-parser';
+import { dynamoAccountRepository } from 'src/infra/database/dynamo/repositories/account/account.repository';
+import { dynamoNotificationRepository } from 'src/infra/database/dynamo/repositories/notification/notification.repository';
 import { ErrorHandler } from '../utils/error-handler';
+import { ResponseParser } from '../utils/response-parser';
 
-const accountRepository = new DynamoAccountRepository(dynamoClient);
-const notificationRepository = new DynamoNotificationRepository(dynamoClient);
-
-const cancelNotificationUsecase = new CancelNotificationUsecase(notificationRepository, accountRepository);
+const cancelNotificationUsecase = new CancelNotificationUsecase(dynamoNotificationRepository, dynamoAccountRepository);
 
 export async function handler(event: APIGatewayProxyEventV2) {
   try {

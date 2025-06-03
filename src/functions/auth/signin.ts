@@ -1,18 +1,14 @@
 import { APIGatewayProxyEventV2 } from 'aws-lambda';
 import { SigninUsecase } from 'src/application/usecases/auth/signin/signin';
 import { SigninInputDto } from 'src/application/usecases/auth/signin/signin.dto';
-import { SigninValidator } from '../validators/signin.validator';
-import { DynamoAccountRepository } from 'src/infra/database/dynamo/repositories/account/account.repository';
-import { dynamoClient } from 'src/infra/database/dynamo/dynamo-client';
-import { DynamoApiKeyRepository } from 'src/infra/database/dynamo/repositories/api-key/api-key.repository';
+import { dynamoAccountRepository } from 'src/infra/database/dynamo/repositories/account/account.repository';
+import { dynamoApiKeyRepository } from 'src/infra/database/dynamo/repositories/api-key/api-key.repository';
 import { BodyParser } from '../utils/body-parser';
-import { ResponseParser } from '../utils/response-parser';
 import { ErrorHandler } from '../utils/error-handler';
+import { ResponseParser } from '../utils/response-parser';
+import { SigninValidator } from '../validators/signin.validator';
 
-const accountRepository = new DynamoAccountRepository(dynamoClient);
-const apiKeyRepository = new DynamoApiKeyRepository(dynamoClient);
-
-const signinUsecase = new SigninUsecase(accountRepository, apiKeyRepository);
+const signinUsecase = new SigninUsecase(dynamoAccountRepository, dynamoApiKeyRepository);
 
 export async function handler(event: APIGatewayProxyEventV2) {
   try {

@@ -1,7 +1,7 @@
 import { DeleteCommand, DynamoDBDocumentClient, QueryCommand } from '@aws-sdk/lib-dynamodb';
 import { ApiKey } from 'src/application/domain/entities/api-key.entity';
 import { ApiKeyRepository } from 'src/application/repositories/api-key.repository';
-import { GSI1_INDEX_NAME, TABLE_NAME } from '../../dynamo-client';
+import { dynamoClient, GSI1_INDEX_NAME, TABLE_NAME } from '../../dynamo-client';
 import { ApiKeyModelToEntityMapper } from './mappers/api-key-model-to-entity.mapper';
 import { ApiKeyEntityToModelMapper } from './mappers/api-key-entity-to-model.mapper';
 
@@ -102,3 +102,5 @@ export class DynamoApiKeyRepository implements ApiKeyRepository {
     await this.dynamoClient.send(command);
   }
 }
+
+export const dynamoApiKeyRepository = new DynamoApiKeyRepository(dynamoClient);

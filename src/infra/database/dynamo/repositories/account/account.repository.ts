@@ -3,7 +3,7 @@ import { Account } from 'src/application/domain/entities/account.entity';
 import { AccountEntityToModelMapper } from './mappers/account-entity-to-model';
 import { AccountModelToEntityMapper } from './mappers/account-model-to-entity';
 import { AccountRepository } from 'src/application/repositories/account.repository';
-import { GSI1_INDEX_NAME, TABLE_NAME } from '../../dynamo-client';
+import { dynamoClient, GSI1_INDEX_NAME, TABLE_NAME } from '../../dynamo-client';
 import { Wait } from 'src/application/utils/wait';
 
 const MAX_RETRIES = 3;
@@ -131,3 +131,5 @@ export class DynamoAccountRepository implements AccountRepository {
     await this.dynamoClient.send(command);
   }
 }
+
+export const dynamoAccountRepository = new DynamoAccountRepository(dynamoClient);

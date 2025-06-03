@@ -1,7 +1,7 @@
 import { DynamoDBDocumentClient, QueryCommand } from '@aws-sdk/lib-dynamodb';
 import { Notification } from 'src/application/domain/entities/notification.entity';
 import { NotificationRepository } from 'src/application/repositories/notification.repository';
-import { GSI1_INDEX_NAME, GSI2_INDEX_NAME, TABLE_NAME } from '../../dynamo-client';
+import { dynamoClient, GSI1_INDEX_NAME, GSI2_INDEX_NAME, TABLE_NAME } from '../../dynamo-client';
 import { NotificationEntityToModelMapper } from './mappers/notification-entity-to-model.mapper';
 import { NotificationModelToEntityMapper } from './mappers/notification-model-to-entity.mapper';
 
@@ -161,3 +161,5 @@ export class DynamoNotificationRepository implements NotificationRepository {
     return JSON.parse(Buffer.from(encodedKey, 'base64').toString('utf-8'));
   }
 }
+
+export const dynamoNotificationRepository = new DynamoNotificationRepository(dynamoClient);
