@@ -2,6 +2,7 @@ export type ListNotificationsInputDto = {
   accountId: string;
   page?: string;
   status?: string;
+  notificationDate?: string;
 }
 
 export type ListNotificationsOutputDto = {

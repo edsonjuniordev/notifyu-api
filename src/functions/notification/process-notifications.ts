@@ -31,7 +31,7 @@ export async function handler() {
 }
 
 async function getNotifications(datetime: string, page = '', accumulatedNotifications: Notification[] = []) {
-  const { notifications, nextPage } = await dynamoNotificationRepository.listByNotificationDateAndStatusCreated(page, datetime);
+  const { notifications, nextPage } = await dynamoNotificationRepository.listByNotificationDateAndStatusCreated(datetime, page);
 
   const newAccumulatedNotifications = [...accumulatedNotifications, ...notifications];
 

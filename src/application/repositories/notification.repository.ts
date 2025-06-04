@@ -8,7 +8,15 @@ export interface NotificationRepository {
     notifications: Notification[];
     nextPage: string;
   }>
-  listByStatus(accountId: string, page: string, status: string): Promise<{
+  listByNotificationDate(accountId: string, notificationDate: string, page: string): Promise<{
+    notifications: Notification[];
+    nextPage: string;
+  }>
+  listByNotificationDateAndStatus(accountId: string, notificationDate: string, status: string, page: string): Promise<{
+    notifications: Notification[];
+    nextPage: string;
+  }>
+  listByStatus(accountId: string, status: string, page: string): Promise<{
     notifications: Notification[];
     nextPage: string;
   }>
