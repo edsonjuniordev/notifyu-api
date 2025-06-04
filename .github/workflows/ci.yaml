@@ -21,6 +21,11 @@ jobs:
       - name: install dependencies
         run: npm install
 
+      - name: Check environment variable
+        run: echo $JWT_SECRET
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
       - name: run tests
         run: npm test
         env:
