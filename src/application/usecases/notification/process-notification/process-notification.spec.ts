@@ -17,6 +17,8 @@ describe('process-notification', () => {
       listByStatus: jest.fn().mockResolvedValueOnce([]),
       update: jest.fn().mockResolvedValueOnce(null),
       findById: jest.fn().mockResolvedValueOnce(null),
+      listByNotificationDate: jest.fn().mockResolvedValueOnce([]),
+      listByNotificationDateAndStatus: jest.fn().mockResolvedValueOnce([]),
     };
 
     processNotificationUsecase = new ProcessNotificationUsecase(notificationRepositoryMock);
@@ -74,5 +76,5 @@ describe('process-notification', () => {
       expect(fetch).toHaveBeenCalled();
       expect(notificationRepositoryMock.update).toHaveBeenCalled();
     });
-   });
+  });
 });

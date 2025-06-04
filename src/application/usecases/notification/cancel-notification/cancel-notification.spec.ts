@@ -28,6 +28,8 @@ describe('cancel-notification', () => {
       listByStatus: jest.fn().mockResolvedValueOnce([]),
       update: jest.fn().mockResolvedValueOnce(null),
       findById: jest.fn().mockResolvedValueOnce(null),
+      listByNotificationDate: jest.fn().mockResolvedValueOnce([]),
+      listByNotificationDateAndStatus: jest.fn().mockResolvedValueOnce([]),
     };
 
     cancelNotificationUsecase = new CancelNotificationUsecase(notificationRepositoryMock, accountRepositoryMock);

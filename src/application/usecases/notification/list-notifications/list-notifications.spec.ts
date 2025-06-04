@@ -16,6 +16,8 @@ describe('list-notifications', () => {
       listByStatus: jest.fn().mockResolvedValueOnce([]),
       update: jest.fn().mockResolvedValueOnce(null),
       findById: jest.fn().mockResolvedValueOnce(null),
+      listByNotificationDate: jest.fn().mockResolvedValueOnce([]),
+      listByNotificationDateAndStatus: jest.fn().mockResolvedValueOnce([]),
     };
 
     listNotificationsUsecase = new ListNotificationsUsecase(notificationRepositoryMock);
@@ -23,7 +25,8 @@ describe('list-notifications', () => {
     listNotificationsInputDto = {
       accountId: 'accountId',
       page: 'page',
-      status: 'created'
+      status: 'created',
+      notificationDate: 'notificationDate'
     };
   });
 
@@ -78,7 +81,56 @@ describe('list-notifications', () => {
       });
 
       expect(notificationRepositoryMock.listByStatus).toHaveBeenCalledTimes(1);
-      expect(notificationRepositoryMock.listByStatus).toHaveBeenCalledWith(listNotificationsInputDto.accountId, listNotificationsInputDto.page, listNotificationsInputDto.status);
+      expect(notificationRepositoryMock.listByStatus).toHaveBeenCalledWith(listNotificationsInputDto.accountId, listNotificationsInputDto.status, listNotificationsInputDto.page);
+    });
+
+    it('should list notifications by notification date', async () => {
+      const notification = Notification.create({
+        accountId: 'accountId',
+        payload: 'payload',
+        notificationDate: 'notificationDate',
+        destination: 'destination',
+        notificationType: 'HTTP'
+      });
+
+      notificationRepositoryMock.listByNotificationDate = jest.fn().mockResolvedValueOnce({
+        notifications: [notification],
+        nextPage: 'nextPage'
+      });
+
+      await listNotificationsUsecase.execute({
+        accountId: listNotificationsInputDto.accountId,
+        page: listNotificationsInputDto.page,
+        notificationDate: listNotificationsInputDto.notificationDate
+      });
+
+      expect(notificationRepositoryMock.listByNotificationDate).toHaveBeenCalledTimes(1);
+      expect(notificationRepositoryMock.listByNotificationDate).toHaveBeenCalledWith(listNotificationsInputDto.accountId, listNotificationsInputDto.notificationDate, listNotificationsInputDto.page);
+    });
+
+    it('should list notifications by notification date and status', async () => {
+      const notification = Notification.create({
+        accountId: 'accountId',
+        payload: 'payload',
+        notificationDate: 'notificationDate',
+        destination: 'destination',
+        notificationType: 'HTTP'
+      });
+
+      notificationRepositoryMock.listByNotificationDateAndStatus = jest.fn().mockResolvedValueOnce({
+        notifications: [notification],
+        nextPage: 'nextPage'
+      });
+
+      await listNotificationsUsecase.execute({
+        accountId: listNotificationsInputDto.accountId,
+        page: listNotificationsInputDto.page,
+        notificationDate: listNotificationsInputDto.notificationDate,
+        status: listNotificationsInputDto.status
+      });
+
+      expect(notificationRepositoryMock.listByNotificationDateAndStatus).toHaveBeenCalledTimes(1);
+      expect(notificationRepositoryMock.listByNotificationDateAndStatus).toHaveBeenCalledWith(listNotificationsInputDto.accountId, listNotificationsInputDto.notificationDate, listNotificationsInputDto.status, listNotificationsInputDto.page);
     });
   });
 });
