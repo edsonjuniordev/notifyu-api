@@ -24,7 +24,7 @@ jobs:
       - name: Check environment variable
         run: echo $JWT_SECRET
         env:
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          JWT_SECRET: ${{ vars.JWT_SECRET }}
 
       - name: run tests
         run: npm test
