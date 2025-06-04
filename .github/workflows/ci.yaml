@@ -18,13 +18,13 @@ jobs:
         with:
           node-version: 20
 
-      - name: install dependencies
-        run: npm install
-
-      - name: Check environment variable
+      - name: check environment variable
         run: echo $JWT_SECRET
         env:
-          JWT_SECRET: ${{ vars.JWT_SECRET }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
+      - name: install dependencies
+        run: npm install
 
       - name: run tests
         run: npm test
