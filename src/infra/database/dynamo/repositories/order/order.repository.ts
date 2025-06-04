@@ -92,7 +92,7 @@ export class DynamoOrderRepository implements OrderRepository {
       IndexName: GSI2_INDEX_NAME,
       KeyConditionExpression: 'GSI2PK = :pk and GSI2SK = :sk',
       ExpressionAttributeValues: {
-        ':pk': `ORDER#${orderId}`,
+        ':pk': 'ORDER',
         ':sk': `ORDER#${orderId}`,
       }
     });

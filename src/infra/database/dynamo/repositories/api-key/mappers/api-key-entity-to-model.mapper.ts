@@ -11,6 +11,8 @@ export class ApiKeyEntityToModelMapper {
         SK: `API_KEY#${apiKey.getApiKey()}`,
         GSI1PK: `ACCOUNT#${apiKey.getAccountId()}`,
         GSI1SK: `API_KEY#${apiKey.getId()}`,
+        GSI2PK: 'API_KEY',
+        GSI2SK: `API_KEY#${apiKey.getId()}`,
         type: 'API_KEY',
         id: apiKey.getId(),
         accountId: apiKey.getAccountId(),

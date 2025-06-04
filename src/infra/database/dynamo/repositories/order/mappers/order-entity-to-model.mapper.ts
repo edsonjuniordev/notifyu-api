@@ -11,7 +11,7 @@ export class OrderEntityToModelMapper {
         SK: `ORDER#${order.getId()}`,
         GSI1PK: `ORDER#${order.getAccountId()}`,
         GSI1SK: `ORDER#${order.getStatus()}#${order.getId()}`,
-        GSI2PK: `ORDER#${order.getId()}`,
+        GSI2PK: 'ORDER',
         GSI2SK: `ORDER#${order.getId()}`,
         type: 'ORDER',
         id: order.getId(),
