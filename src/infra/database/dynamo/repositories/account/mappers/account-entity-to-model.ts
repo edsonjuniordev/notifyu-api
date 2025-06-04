@@ -11,6 +11,8 @@ export class AccountEntityToModelMapper {
         SK: `ACCOUNT#${account.getEmail()}`,
         GSI1PK: `ACCOUNT#${account.getId()}`,
         GSI1SK: `ACCOUNT#${account.getId()}`,
+        GSI2PK: 'ACCOUNT',
+        GSI2SK: `ACCOUNT#${account.getId()}`,
         type: 'ACCOUNT',
         id: account.getId(),
         name: account.getName(),
