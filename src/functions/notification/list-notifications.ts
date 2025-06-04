@@ -14,7 +14,9 @@ export async function handler(event: APIGatewayProxyEventV2) {
 
     const status = event.queryStringParameters?.status;
 
-    const response = await listNotificationsUsecase.execute({ page, accountId, status });
+    const notificationDate = event.queryStringParameters?.notificationDate;
+
+    const response = await listNotificationsUsecase.execute({ accountId, status, notificationDate, page });
 
     return ResponseParser.parse(200, response);
   } catch (error) {

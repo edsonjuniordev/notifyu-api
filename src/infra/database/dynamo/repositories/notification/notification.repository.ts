@@ -1,9 +1,10 @@
 import { DynamoDBDocumentClient, QueryCommand } from '@aws-sdk/lib-dynamodb';
 import { Notification } from 'src/application/domain/entities/notification.entity';
 import { NotificationRepository } from 'src/application/repositories/notification.repository';
-import { dynamoClient, GSI1_INDEX_NAME, GSI2_INDEX_NAME, TABLE_NAME } from '../../dynamo-client';
+import { dynamoClient, GSI1_INDEX_NAME, GSI2_INDEX_NAME, GSI3_INDEX_NAME, TABLE_NAME } from '../../dynamo-client';
 import { NotificationEntityToModelMapper } from './mappers/notification-entity-to-model.mapper';
 import { NotificationModelToEntityMapper } from './mappers/notification-model-to-entity.mapper';
+import { Datetime } from 'src/application/utils/datetime';
 
 export class DynamoNotificationRepository implements NotificationRepository {
   constructor(private readonly dynamoClient: DynamoDBDocumentClient) { }
@@ -78,7 +79,7 @@ export class DynamoNotificationRepository implements NotificationRepository {
     };
   }
 
-  public async listByStatus(accountId: string, page: string, status: string): Promise<{ notifications: Notification[]; nextPage: string; }> {
+  public async listByStatus(accountId: string, status: string, page: string): Promise<{ notifications: Notification[]; nextPage: string; }> {
     const lastEvaluatedKey = page ? this.decodeLastEvaluatedKey(page) : undefined;
 
     const command = new QueryCommand({
@@ -115,7 +116,7 @@ export class DynamoNotificationRepository implements NotificationRepository {
     };
   }
 
-  public async listByNotificationDateAndStatusCreated(page: string, notificationDate: string): Promise<{ notifications: Notification[]; nextPage: string; }> {
+  public async listByNotificationDateAndStatusCreated(notificationDate: string, page: string): Promise<{ notifications: Notification[]; nextPage: string; }> {
     const lastEvaluatedKey = page ? this.decodeLastEvaluatedKey(page) : undefined;
 
     const command = new QueryCommand({
@@ -125,6 +126,82 @@ export class DynamoNotificationRepository implements NotificationRepository {
       ExpressionAttributeValues: {
         ':pk': 'NOTIFICATION',
         ':sk': `NOTIFICATION#${notificationDate}#CREATED`
+      },
+      ExclusiveStartKey: lastEvaluatedKey,
+      ScanIndexForward: false
+    });
+
+    const result = await this.dynamoClient.send(command);
+
+    const items = result.Items;
+
+    if (items.length === 0) {
+      return {
+        notifications: [],
+        nextPage: null
+      };
+    }
+
+    const notifications = items.map((item) => NotificationModelToEntityMapper.map(item));
+
+    const lastEvaluatedKeyEncoded = result.LastEvaluatedKey ? this.encodeLastEvaluatedKey(result.LastEvaluatedKey) : null;
+
+    return {
+      notifications,
+      nextPage: lastEvaluatedKeyEncoded
+    };
+  }
+
+  public async listByNotificationDate(accountId: string, notificationDate: string, page: string): Promise<{ notifications: Notification[]; nextPage: string; }> {
+    const lastEvaluatedKey = page ? this.decodeLastEvaluatedKey(page) : undefined;
+
+    const notificationDateWithDatetime = Datetime.addHoursToIsoString(notificationDate, 3);
+
+    const command = new QueryCommand({
+      TableName: TABLE_NAME,
+      IndexName: GSI3_INDEX_NAME,
+      KeyConditionExpression: 'GSI3PK = :pk AND begins_with(GSI3SK, :sk)',
+      ExpressionAttributeValues: {
+        ':pk': `NOTIFICATION#${accountId}`,
+        ':sk': `NOTIFICATION#${notificationDateWithDatetime}`
+      },
+      ExclusiveStartKey: lastEvaluatedKey,
+      ScanIndexForward: false
+    });
+
+    const result = await this.dynamoClient.send(command);
+
+    const items = result.Items;
+
+    if (items.length === 0) {
+      return {
+        notifications: [],
+        nextPage: null
+      };
+    }
+
+    const notifications = items.map((item) => NotificationModelToEntityMapper.map(item));
+
+    const lastEvaluatedKeyEncoded = result.LastEvaluatedKey ? this.encodeLastEvaluatedKey(result.LastEvaluatedKey) : null;
+
+    return {
+      notifications,
+      nextPage: lastEvaluatedKeyEncoded
+    };
+  }
+
+  public async listByNotificationDateAndStatus(accountId: string, notificationDate: string, status: string, page: string): Promise<{ notifications: Notification[]; nextPage: string; }> {
+    const lastEvaluatedKey = page ? this.decodeLastEvaluatedKey(page) : undefined;
+
+    const notificationDateWithDatetime = Datetime.addHoursToIsoString(notificationDate, 3);
+
+    const command = new QueryCommand({
+      TableName: TABLE_NAME,
+      IndexName: GSI3_INDEX_NAME,
+      KeyConditionExpression: 'GSI3PK = :pk AND GSI3SK = :sk',
+      ExpressionAttributeValues: {
+        ':pk': `NOTIFICATION#${accountId}`,
+        ':sk': `NOTIFICATION#${notificationDateWithDatetime}#${status.toUpperCase()}`
       },
       ExclusiveStartKey: lastEvaluatedKey,
       ScanIndexForward: false

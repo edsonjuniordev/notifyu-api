@@ -8,10 +8,23 @@ export class ListNotificationsUsecase {
   public async execute({
     accountId,
     page,
-    status
+    status,
+    notificationDate
   }: ListNotificationsInputDto): Promise<ListNotificationsOutputDto> {
+    if (notificationDate && status) {
+      const { nextPage, notifications } = await this.notificationRepository.listByNotificationDateAndStatus(accountId, notificationDate, status, page);
+
+      return this.toOutput(nextPage, notifications);
+    }
+
+    if (notificationDate) {
+      const { nextPage, notifications } = await this.notificationRepository.listByNotificationDate(accountId, notificationDate, page);
+
+      return this.toOutput(nextPage, notifications);
+    }
+
     if (status) {
-      const { nextPage, notifications } = await this.notificationRepository.listByStatus(accountId, page, status);
+      const { nextPage, notifications } = await this.notificationRepository.listByStatus(accountId, status, page);
 
       return this.toOutput(nextPage, notifications);
     }
