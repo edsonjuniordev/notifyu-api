@@ -48,7 +48,7 @@ export class SigninUsecase {
     };
 
     const token = sign(payload, process.env.JWT_SECRET, {
-      expiresIn: '1h',
+      expiresIn: '3h',
     });
 
     return token;
