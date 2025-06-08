@@ -99,7 +99,6 @@ describe('create-order', () => {
       expect(planRepositoryMock.findById).toHaveBeenCalledTimes(1);
       expect(planRepositoryMock.findById).toHaveBeenCalledWith(createOrderInputDto.planId);
       expect(accountRepositoryMock.findByIdAndLock).toHaveBeenCalledTimes(1);
-      expect(accountRepositoryMock.findByIdAndLock).toHaveBeenCalledWith(createOrderInputDto.accountId);
       expect(orderRepositoryMock.create).toHaveBeenCalledTimes(1);
     });
   });

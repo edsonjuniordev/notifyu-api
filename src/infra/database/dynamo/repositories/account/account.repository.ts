@@ -42,7 +42,7 @@ export class DynamoAccountRepository implements AccountRepository {
     return account;
   }
 
-  public async findByIdAndLock(id: string, retries: number = 1): Promise<Account | null> {
+  public async findByIdAndLock(id: string, lockOwner: string, retries: number = 1): Promise<Account | null> {
     if (retries > MAX_RETRIES) {
       throw new Error('could not lock the record');
     }
@@ -69,7 +69,7 @@ export class DynamoAccountRepository implements AccountRepository {
 
     if (accountModel.locked) {
       await Wait.wait(RETRY_TIME);
-      return this.findByIdAndLock(id, retries++);
+      return this.findByIdAndLock(id, lockOwner, retries++);
     }
 
     const putCommand = new PutCommand({
@@ -85,15 +85,26 @@ export class DynamoAccountRepository implements AccountRepository {
         email: accountModel.email,
         password: accountModel.password,
         notificationQuantity: accountModel.notificationQuantity,
+        lockOwner,
         locked: true
       },
+      ConditionExpression: 'locked = :locked and lockOwner = :lockOwner',
+      ExpressionAttributeValues: {
+        ':locked': false,
+        ':lockOwner': false
+      }
     });
 
-    await this.dynamoClient.send(putCommand);
+    try {
+      await this.dynamoClient.send(putCommand);
 
-    const account = AccountModelToEntityMapper.map(accountModel);
+      const account = AccountModelToEntityMapper.map(accountModel);
 
-    return account;
+      return account;
+    } catch {
+      await Wait.wait(RETRY_TIME);
+      return this.findByIdAndLock(id, lockOwner, retries++);
+    }
   }
 
   public async findByEmail(email: string): Promise<Account | null> {
@@ -119,14 +130,14 @@ export class DynamoAccountRepository implements AccountRepository {
     return account;
   }
 
-  public async update(account: Account): Promise<void> {
-    const command = AccountEntityToModelMapper.map(account);
+  public async update(account: Account, lockOwner: string): Promise<void> {
+    const command = AccountEntityToModelMapper.map(account, lockOwner);
 
     await this.dynamoClient.send(command);
   }
 
-  public async unlock(account: Account): Promise<void> {
-    const command = AccountEntityToModelMapper.map(account);
+  public async unlock(account: Account, lockOwner: string): Promise<void> {
+    const command = AccountEntityToModelMapper.map(account, lockOwner);
 
     await this.dynamoClient.send(command);
   }

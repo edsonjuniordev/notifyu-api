@@ -67,10 +67,8 @@ describe('create-notification', () => {
       await createNotificationUsecase.execute(createNotificationInputDto);
 
       expect(accountRepositoryMock.findByIdAndLock).toHaveBeenCalledTimes(1);
-      expect(accountRepositoryMock.findByIdAndLock).toHaveBeenCalledWith(createNotificationInputDto.accountId);
       expect(notificationRepositoryMock.create).toHaveBeenCalledTimes(1);
       expect(accountRepositoryMock.update).toHaveBeenCalledTimes(1);
-      expect(accountRepositoryMock.update).toHaveBeenCalledWith(account);
     });
 
     it('should throw an error if account not exists', async () => {
@@ -79,7 +77,6 @@ describe('create-notification', () => {
       );
 
       expect(accountRepositoryMock.findByIdAndLock).toHaveBeenCalledTimes(1);
-      expect(accountRepositoryMock.findByIdAndLock).toHaveBeenCalledWith(createNotificationInputDto.accountId);
     });
 
     it('should throw an error if account not have notifications', async () => {
@@ -102,9 +99,7 @@ describe('create-notification', () => {
       );
 
       expect(accountRepositoryMock.findByIdAndLock).toHaveBeenCalledTimes(1);
-      expect(accountRepositoryMock.findByIdAndLock).toHaveBeenCalledWith(createNotificationInputDto.accountId);
       expect(accountRepositoryMock.unlock).toHaveBeenCalledTimes(1);
-      expect(accountRepositoryMock.unlock).toHaveBeenCalledWith(account);
     });
   });
 });

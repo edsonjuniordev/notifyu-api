@@ -2,6 +2,7 @@ import { AccountRepository } from 'src/application/repositories/account.reposito
 import { NotificationRepository } from 'src/application/repositories/notification.repository';
 import { CreateNotificationInputDto, CreateNotificationOutputDto } from './create-notification.dto';
 import { Notification } from 'src/application/domain/entities/notification.entity';
+import { GenerateULID } from 'src/application/utils/generate-ulid';
 
 export class CreateNotificationUsecase {
   constructor(
@@ -10,7 +11,9 @@ export class CreateNotificationUsecase {
   ) { }
 
   public async execute(input: CreateNotificationInputDto): Promise<CreateNotificationOutputDto> {
-    const account = await this.accountRepository.findByIdAndLock(input.accountId);
+    const lockOwner = GenerateULID.generate();
+
+    const account = await this.accountRepository.findByIdAndLock(input.accountId, lockOwner);
 
     if (!account) {
       throw new Error('account not found');
@@ -28,7 +31,7 @@ export class CreateNotificationUsecase {
       });
 
       await this.notificationRepository.create(notification);
-      await this.accountRepository.update(account);
+      await this.accountRepository.update(account, lockOwner);
 
       return {
         id: notification.getId(),
@@ -42,7 +45,7 @@ export class CreateNotificationUsecase {
         updatedAt: notification.getUpdatedAt(),
       };
     } catch (error) {
-      await this.accountRepository.unlock(account);
+      await this.accountRepository.unlock(account, lockOwner);
       throw error;
     }
   }
