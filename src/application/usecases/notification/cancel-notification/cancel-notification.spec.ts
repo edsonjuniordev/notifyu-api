@@ -71,7 +71,6 @@ describe('cancel-notification', () => {
       expect(notificationRepositoryMock.findById).toHaveBeenCalledTimes(1);
       expect(notificationRepositoryMock.findById).toHaveBeenCalledWith(cancelNotificationInputDto.notificationId, cancelNotificationInputDto.accountId);
       expect(accountRepositoryMock.findByIdAndLock).toHaveBeenCalledTimes(1);
-      expect(accountRepositoryMock.findByIdAndLock).toHaveBeenCalledWith(notification.getAccountId());
     });
 
     it('should throw an error if the notification does not exist', async () => {

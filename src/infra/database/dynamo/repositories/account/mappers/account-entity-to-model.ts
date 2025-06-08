@@ -3,8 +3,8 @@ import { Account } from 'src/application/domain/entities/account.entity';
 import { TABLE_NAME } from '../../../dynamo-client';
 
 export class AccountEntityToModelMapper {
-  public static map(account: Account): PutCommand {
-    return new PutCommand({
+  public static map(account: Account, lockOwner?: string): PutCommand {
+    const putCommand = new PutCommand({
       TableName: TABLE_NAME,
       Item: {
         PK: `ACCOUNT#${account.getEmail()}`,
@@ -23,8 +23,18 @@ export class AccountEntityToModelMapper {
         externalReference: account.getExternalReference(),
         createdAt: account.getCreatedAt(),
         updatedAt: account.getUpdatedAt(),
+        lockOwner: false,
         locked: false
-      },
+      }
     });
+
+    if (lockOwner) {
+      putCommand.input.ConditionExpression = 'lockOwner = :lockOwner';
+      putCommand.input.ExpressionAttributeValues = {
+        ':lockOwner': lockOwner || false
+      };
+    }
+
+    return putCommand;
   }
 }

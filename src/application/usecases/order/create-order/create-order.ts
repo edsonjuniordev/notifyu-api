@@ -4,6 +4,7 @@ import { CreateOrderInputDto, CreateOrderOutputDto } from './create-order.dto';
 import { Order } from 'src/application/domain/entities/order.entity';
 import { PlanRepository } from 'src/application/repositories/plan.repository';
 import { AccountRepository } from 'src/application/repositories/account.repository';
+import { GenerateULID } from 'src/application/utils/generate-ulid';
 
 export class CreateOrderUsecase {
   constructor(
@@ -14,7 +15,9 @@ export class CreateOrderUsecase {
   ) { }
 
   public async execute(input: CreateOrderInputDto): Promise<CreateOrderOutputDto> {
-    const account = await this.accountRepository.findByIdAndLock(input.accountId);
+    const lockOwner = GenerateULID.generate();
+
+    const account = await this.accountRepository.findByIdAndLock(input.accountId, lockOwner);
     const plan = await this.planRepository.findById(input.planId);
 
     if (!plan) {
@@ -42,10 +45,10 @@ export class CreateOrderUsecase {
         account.addHttpNotificationQuantity(plan.getHttpNotificationQuantity());
       }
 
-      await this.accountRepository.update(account);
+      await this.accountRepository.update(account, lockOwner);
       await this.orderRepository.create(order);
     } catch (error) {
-      await this.accountRepository.unlock(account);
+      await this.accountRepository.unlock(account, lockOwner);
       throw error;
     }
 
