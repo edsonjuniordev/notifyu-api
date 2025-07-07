@@ -1,3 +1,4 @@
+import { Datetime } from 'src/application/utils/datetime';
 import { GenerateULID } from 'src/application/utils/generate-ulid';
 
 export enum NotificationStatus {
@@ -55,7 +56,7 @@ export class Notification {
   }: CreateDto): Notification {
     const id = GenerateULID.generate();
     const status = NotificationStatus.CREATED;
-    const now = new Date().toISOString();
+    const now = Datetime.subtractHoursToIsoString(new Date().toISOString(), 3);
     const notifiedAt = '';
 
     return new Notification(
@@ -144,7 +145,7 @@ export class Notification {
     }
 
     this.status = NotificationStatus.NOTIFIED;
-    this.notifiedAt = new Date().toISOString();
+    this.notifiedAt = Datetime.subtractHoursToIsoString(new Date().toISOString(), 3);
     this.update();
   }
 

@@ -5,8 +5,8 @@ import { TABLE_NAME } from '../../../dynamo-client';
 
 export class NotificationEntityToModelMapper {
   public static map(notification: Notification): PutCommand {
-    const dateTime = Datetime.addHoursToIsoString(notification.getNotificationDate(), 3);
-    const notificationDate = Datetime.roundToExactMinute(new Date(dateTime)).toISOString();
+    const notificationDateDateTime = Datetime.addHoursToIsoString(notification.getNotificationDate(), 3);
+    const notificationDatePlusHours = Datetime.roundToExactMinute(new Date(notificationDateDateTime)).toISOString();
 
     return new PutCommand({
       TableName: TABLE_NAME,
@@ -16,9 +16,9 @@ export class NotificationEntityToModelMapper {
         GSI1PK: `NOTIFICATION#${notification.getAccountId()}`,
         GSI1SK: `NOTIFICATION#${notification.getStatus()}#${notification.getId()}`,
         GSI2PK: 'NOTIFICATION',
-        GSI2SK: `NOTIFICATION#${notificationDate}#${notification.getStatus().toString()}`,
+        GSI2SK: `NOTIFICATION#${notificationDatePlusHours}#${notification.getStatus().toString()}`,
         GSI3PK: `NOTIFICATION#${notification.getAccountId()}`,
-        GSI3SK: `NOTIFICATION#${notificationDate}#${notification.getStatus().toString()}`,
+        GSI3SK: `NOTIFICATION#${notificationDatePlusHours}#${notification.getStatus().toString()}`,
         type: 'NOTIFICATION',
         id: notification.getId(),
         accountId: notification.getAccountId(),
