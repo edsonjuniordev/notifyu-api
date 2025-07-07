@@ -18,6 +18,18 @@ export class Datetime {
     return date.toISOString();
   }
 
+  public static subtractHoursToIsoString(dateIsoString: string, hours: number): string {
+    const date = new Date(dateIsoString);
+
+    if (isNaN(date.getTime())) {
+      throw new Error('Invalid ISO date string');
+    }
+
+    date.setHours(date.getHours() - hours);
+
+    return date.toISOString();
+  }
+
   public static roundToExactMinute(date: Date): Date {
     const result = new Date(date);
     result.setSeconds(0, 0);
